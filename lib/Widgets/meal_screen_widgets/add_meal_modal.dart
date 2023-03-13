@@ -1,5 +1,6 @@
 import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
 import 'package:fiteness_x/modals/meal_modal.dart';
+import 'package:fiteness_x/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
@@ -33,6 +34,7 @@ class _AddMealModalState extends State<AddMealModal> {
   String mealDropDownValue = 'Lunch';
   DateTime date = DateTime.now();
   TimeOfDay time = TimeOfDay.now();
+  NotificationService notificationService = NotificationService();
   MealType mealTypeStringToEnumConvertor(String mealtype) {
     switch (mealtype.toLowerCase()) {
       case 'breakfast':
@@ -111,8 +113,9 @@ class _AddMealModalState extends State<AddMealModal> {
   }
 
   void initState() {
-    date = widget.addingDate;
     super.initState();
+    date = widget.addingDate;
+    notificationService.initializeNotifications();
   }
 
   addMeal(BuildContext ctx) async {
@@ -146,6 +149,11 @@ class _AddMealModalState extends State<AddMealModal> {
         }
       }
     }
+    notificationService.sendNotification(
+        id: 1,
+        date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
+        title: 'Meal Time!',
+        body: 'Time to make ${widget.mealName}');
     setSelectedMeal(MealModal(
         mealId: widget.mealId,
         mealName: widget.mealName,
