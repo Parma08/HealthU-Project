@@ -3,6 +3,7 @@ import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../Widgets/meal_screen_widgets/daily_meal_schedule_widgets/daily_meal_schedule.dart';
 import '../Widgets/meal_screen_widgets/today_meals.dart';
 
 class MealsScreen extends StatelessWidget {
@@ -19,8 +20,8 @@ class MealsScreen extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.25,
             padding: EdgeInsets.all(10),
             width: MediaQuery.of(context).size.width,
-            child: SvgPicture.asset(
-              'assets/images/meal_banner.svg',
+            child: Image.asset(
+              'assets/images/newwe.gif',
               fit: BoxFit.contain,
             ),
           ),
@@ -41,14 +42,20 @@ class MealsScreen extends StatelessWidget {
                   'Daily Meal Schedule',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 7, horizontal: 14),
-                  decoration: BoxDecoration(
-                      gradient: primaryLinearGradient,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Text(
-                    'Check',
-                    style: TextStyle(color: Colors.white, fontSize: 13),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context)
+                        .pushNamed(DailyMealSchedule.routeName);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 14),
+                    decoration: BoxDecoration(
+                        gradient: primaryLinearGradient,
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Text(
+                      'Check',
+                      style: TextStyle(color: Colors.white, fontSize: 13),
+                    ),
                   ),
                 )
               ],

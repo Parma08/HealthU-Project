@@ -116,10 +116,17 @@ class _MealInfoScreeenState extends State<MealInfoScreeen> {
 
   openMealAddModal(BuildContext context) {
     showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
         context: context,
         builder: (_) {
           return AddMealModal(
             imageLink: imageURL,
+            addingDate: DateTime.now(),
+            isEdit: false,
             mealId: widget.id,
             mealName: widget.mealName,
             mealCategory: mealCategory,
@@ -136,7 +143,7 @@ class _MealInfoScreeenState extends State<MealInfoScreeen> {
                 height: 70,
                 width: 70,
                 decoration: BoxDecoration(
-                    gradient: primaryLinearGradient,
+                    gradient: secondaryLinearGradient,
                     borderRadius: BorderRadius.circular(45)),
                 child: IconButton(
                   icon: Icon(
