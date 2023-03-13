@@ -12,12 +12,17 @@ class AddMealModal extends StatefulWidget {
   String mealName;
   String mealCategory;
   String imageLink;
-  AddMealModal({
-    required this.mealId,
-    required this.mealName,
-    required this.imageLink,
-    required this.mealCategory,
-  }) {}
+  DateTime addingDate;
+  bool isEdit;
+  MealType? previousMealTypeOfEditingMeal;
+  AddMealModal(
+      {required this.mealId,
+      required this.mealName,
+      required this.imageLink,
+      required this.mealCategory,
+      required this.addingDate,
+      required this.isEdit,
+      this.previousMealTypeOfEditingMeal}) {}
 
   @override
   State<AddMealModal> createState() => _AddMealModalState();
@@ -26,8 +31,8 @@ class AddMealModal extends StatefulWidget {
 class _AddMealModalState extends State<AddMealModal> {
   List<String> mealType = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
   String mealDropDownValue = 'Lunch';
-  TimeOfDay time = TimeOfDay.now();
   DateTime date = DateTime.now();
+  TimeOfDay time = TimeOfDay.now();
   MealType mealTypeStringToEnumConvertor(String mealtype) {
     switch (mealtype.toLowerCase()) {
       case 'breakfast':
@@ -87,9 +92,14 @@ class _AddMealModalState extends State<AddMealModal> {
     date = (await showDatePicker(
         helpText: 'When will you have this meal?',
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: widget.addingDate,
         firstDate: DateTime.now(),
-        lastDate: DateTime(2030)))!;
+        lastDate: DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .add(Duration(
+                days: DateTime(DateTime.now().year, DateTime.now().month + 1, 0)
+                    .day))))!;
+    setState(() {});
   }
 
   Future openTimePicker(BuildContext context) async {
@@ -97,16 +107,19 @@ class _AddMealModalState extends State<AddMealModal> {
         context: context,
         initialTime: TimeOfDay.now(),
         helpText: 'At what time will you have this meal?'))!;
+    setState(() {});
+  }
+
+  void initState() {
+    date = widget.addingDate;
+    super.initState();
   }
 
   addMeal(BuildContext ctx) async {
     for (var i = 0; i < getSelectedMeal.length; i++) {
-      print('fklsdkfldsf1 ${getSelectedMeal[i].mealCategory}');
-      print('fklsdkfldsf1 ${widget.mealId}');
       if (getSelectedMeal[i].mealId == widget.mealId &&
           getSelectedMeal[i].mealType ==
               mealTypeStringToEnumConvertor(mealDropDownValue)) {
-        print('fklsdkfldsf');
         if (getSelectedMeal[i].date.year == date.year &&
             getSelectedMeal[i].date.month == date.month &&
             getSelectedMeal[i].date.day == date.day) {
@@ -118,6 +131,18 @@ class _AddMealModalState extends State<AddMealModal> {
               context: context,
               successMessage: 'Meal Already added for this day');
           return;
+        }
+      }
+    }
+    if (widget.isEdit) {
+      for (var i = 0; i < selectedMeals.length; i++) {
+        if (selectedMeals[i].mealId == widget.mealId &&
+            selectedMeals[i].mealType == widget.previousMealTypeOfEditingMeal) {
+          if (selectedMeals[i].date.year == widget.addingDate.year &&
+              selectedMeals[i].date.month == widget.addingDate.month &&
+              selectedMeals[i].date.day == widget.addingDate.day) {
+            selectedMeals.removeAt(i);
+          }
         }
       }
     }
@@ -155,8 +180,7 @@ class _AddMealModalState extends State<AddMealModal> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                      color: Color.fromRGBO(255, 202, 202, 0.498),
-                      blurRadius: 4),
+                      color: Color.fromRGBO(202, 211, 255, 0.5), blurRadius: 4),
                 ],
                 borderRadius: BorderRadius.circular(15)),
             child: Container(

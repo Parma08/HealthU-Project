@@ -1,3 +1,4 @@
+import 'Widgets/meal_screen_widgets/daily_meal_schedule_widgets/daily_meal_schedule.dart';
 import 'screens/get_started_screen.dart';
 import 'screens/introduction_screen.dart';
 import 'package:fiteness_x/themes.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         CreateAccount.routeName: (ctx) => CreateAccount(),
         LoginScreen.routeName: (ctx) => LoginScreen(),
         TabsPage.routeName: (ctx) => TabsPage(),
+        DailyMealSchedule.routeName: (ctx) => DailyMealSchedule(),
       },
     );
   }

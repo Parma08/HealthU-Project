@@ -38,7 +38,7 @@ class MealMakingSteps extends StatelessWidget {
             return Container(
                 padding: EdgeInsets.only(left: 12, right: 10),
                 width: MediaQuery.of(context).size.width,
-                height: 200,
+                height: 180,
                 child: LayoutBuilder(
                   builder: (ctx, constraints) {
                     return Row(
@@ -106,7 +106,7 @@ class MealMakingSteps extends StatelessWidget {
                                       step,
                                       style: TextStyle(
                                         color: Color(0xFF7B6F72),
-                                        fontSize: 18,
+                                        fontSize: 16,
                                       ),
                                     ),
                                   ),

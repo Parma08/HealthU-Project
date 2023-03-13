@@ -214,7 +214,7 @@ class _TodayMealsState extends State<TodayMeals> {
                                                                 .start,
                                                         children: [
                                                           Container(
-                                                            width: 200,
+                                                            width: 170,
                                                             child: Text(
                                                               mealItem.mealName,
                                                               style: TextStyle(
