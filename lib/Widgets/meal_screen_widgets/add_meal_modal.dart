@@ -15,6 +15,7 @@ class AddMealModal extends StatefulWidget {
   String imageLink;
   DateTime addingDate;
   bool isEdit;
+  TimeOfDay addingTime;
   MealType? previousMealTypeOfEditingMeal;
   AddMealModal(
       {required this.mealId,
@@ -22,6 +23,7 @@ class AddMealModal extends StatefulWidget {
       required this.imageLink,
       required this.mealCategory,
       required this.addingDate,
+      required this.addingTime,
       required this.isEdit,
       this.previousMealTypeOfEditingMeal}) {}
 
@@ -107,7 +109,7 @@ class _AddMealModalState extends State<AddMealModal> {
   Future openTimePicker(BuildContext context) async {
     time = (await showTimePicker(
         context: context,
-        initialTime: TimeOfDay.now(),
+        initialTime: widget.addingTime,
         helpText: 'At what time will you have this meal?'))!;
     setState(() {});
   }
@@ -125,7 +127,9 @@ class _AddMealModalState extends State<AddMealModal> {
               mealTypeStringToEnumConvertor(mealDropDownValue)) {
         if (getSelectedMeal[i].date.year == date.year &&
             getSelectedMeal[i].date.month == date.month &&
-            getSelectedMeal[i].date.day == date.day) {
+            getSelectedMeal[i].date.day == date.day &&
+            (getSelectedMeal[i].time.hour == time.hour &&
+                getSelectedMeal[i].time.minute == time.minute)) {
           Future.delayed(Duration(seconds: 1), () {
             Navigator.of(ctx).pop(); //For dialog
             Navigator.of(ctx).pop(); //For bottom modal
@@ -143,14 +147,21 @@ class _AddMealModalState extends State<AddMealModal> {
             selectedMeals[i].mealType == widget.previousMealTypeOfEditingMeal) {
           if (selectedMeals[i].date.year == widget.addingDate.year &&
               selectedMeals[i].date.month == widget.addingDate.month &&
-              selectedMeals[i].date.day == widget.addingDate.day) {
+              selectedMeals[i].date.day == widget.addingDate.day &&
+              (getSelectedMeal[i].time.hour == widget.addingTime.hour &&
+                  getSelectedMeal[i].time.minute == widget.addingTime.minute)) {
             selectedMeals.removeAt(i);
+            notificationService.cancelNotification(widget.addingDate.day +
+                widget.addingDate.month +
+                widget.addingDate.year +
+                widget.addingTime.hour +
+                widget.addingTime.minute);
           }
         }
       }
     }
     notificationService.sendNotification(
-        id: 1,
+        id: (date.day + date.month + date.year + time.hour + time.minute),
         date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
         title: 'Meal Time!',
         body: 'Time to make ${widget.mealName}');

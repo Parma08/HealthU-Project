@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../screens/home_screen.dart';
 import 'package:fiteness_x/TabScreens/meals.dart';
 import 'package:fiteness_x/TabScreens/profile.dart';
-import 'package:fiteness_x/TabScreens/search.dart';
+import 'package:fiteness_x/TabScreens/workout.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,7 @@ class TabsPageState extends State<TabsPage> {
   final List<Map<String, dynamic>> pages = [
     {'screenWidget': HomeScreen(), 'tabBarTitle': ''},
     {'screenWidget': MealsScreen(), 'tabBarTitle': 'Meals'},
-    {'screenWidget': SearchScreen(), 'tabBarTitle': ''},
+    {'screenWidget': WorkoutScreen(), 'tabBarTitle': ''},
     {'screenWidget': Camera_Screen(), 'tabBarTitle': ''},
     {'screenWidget': ProfileScreen(), 'tabBarTitle': 'Profile'},
   ];
