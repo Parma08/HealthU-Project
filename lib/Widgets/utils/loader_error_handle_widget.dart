@@ -1,3 +1,4 @@
+import 'package:fiteness_x/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -145,7 +146,8 @@ List<DateTime> generateYearCalendar() {
 void deleteMeal(
     {required String mealId,
     required MealType mealType,
-    required DateTime date}) {
+    required DateTime date,
+    required TimeOfDay time}) {
   for (var i = 0; i < selectedMeals.length; i++) {
     if (selectedMeals[i].mealId == mealId &&
         selectedMeals[i].mealType == mealType) {
@@ -153,6 +155,8 @@ void deleteMeal(
           selectedMeals[i].date.month == date.month &&
           selectedMeals[i].date.day == date.day) {
         selectedMeals.removeAt(i);
+        NotificationService().cancelNotification(
+            date.day + date.month + date.year + time.hour + time.minute);
       }
     }
   }
@@ -163,7 +167,8 @@ Future mealDeletionConfirmation(
     required String confirmationMessage,
     required String mealId,
     required MealType mealType,
-    required DateTime date}) {
+    required DateTime date,
+    required TimeOfDay time}) {
   return showDialog(
       barrierDismissible: true,
       context: context,
@@ -221,7 +226,10 @@ Future mealDeletionConfirmation(
                       TextButton(
                           onPressed: () {
                             deleteMeal(
-                                mealId: mealId, mealType: mealType, date: date);
+                                mealId: mealId,
+                                mealType: mealType,
+                                date: date,
+                                time: time);
                             Navigator.of(context).pop();
                           },
                           child: Text(

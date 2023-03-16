@@ -125,6 +125,7 @@ class _MealInfoScreeenState extends State<MealInfoScreeen> {
         builder: (_) {
           return AddMealModal(
             imageLink: imageURL,
+            addingTime: TimeOfDay.now(),
             addingDate: DateTime.now(),
             isEdit: false,
             mealId: widget.id,

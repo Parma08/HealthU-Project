@@ -151,7 +151,7 @@ class ShowDailyMealsByCategoryState extends State<ShowDailyMealsByCategory> {
                                         fontSize: 13,
                                         fontWeight: FontWeight.w500)),
                                 Text(
-                                    '${DateFormat.jm().format(DateTime(categoryMeal.date.year, categoryMeal.date.month, categoryMeal.date.day, categoryMeal.date.hashCode, categoryMeal.time.hour, categoryMeal.time.minute))}',
+                                    '${DateFormat.jm().format(DateTime(categoryMeal.date.year, categoryMeal.date.month, categoryMeal.date.day, categoryMeal.time.hour, categoryMeal.time.minute))}',
                                     style: TextStyle(
                                         fontSize: 11, color: Color(0xFF7B6F72)))
                               ],
@@ -178,6 +178,7 @@ class ShowDailyMealsByCategoryState extends State<ShowDailyMealsByCategory> {
                                           mealId: categoryMeal.mealId,
                                           mealName: categoryMeal.mealName,
                                           imageLink: categoryMeal.imageLink,
+                                          addingTime: categoryMeal.time,
                                           mealCategory:
                                               getMealCategoryEnumValue(
                                                   categoryMeal.mealCategory),
@@ -204,7 +205,8 @@ class ShowDailyMealsByCategoryState extends State<ShowDailyMealsByCategory> {
                                             'Are you sure you want to delete this meal?',
                                         mealId: categoryMeal.mealId,
                                         mealType: categoryMeal.mealType,
-                                        date: categoryMeal.date);
+                                        date: categoryMeal.date,
+                                        time: categoryMeal.time);
                                     setState(() {});
                                   },
                                   icon: Icon(Icons.delete_forever),

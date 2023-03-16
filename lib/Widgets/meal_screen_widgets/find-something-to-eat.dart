@@ -1,3 +1,4 @@
+import 'package:fiteness_x/Widgets/meal_screen_widgets/today_meals.dart';
 import 'package:fiteness_x/Widgets/show_meals_widgets/show_meal_screen.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../modals/meal_modal.dart';
 
-class FindSomethingToEat extends StatelessWidget {
+class FindSomethingToEat extends StatefulWidget {
+  @override
+  State<FindSomethingToEat> createState() => _FindSomethingToEatState();
+}
+
+class _FindSomethingToEatState extends State<FindSomethingToEat> {
   getMealCategoryEnumValue(MealCategory mealCategory) {
     switch (mealCategory) {
       case MealCategory.Beef:
@@ -63,7 +69,7 @@ class FindSomethingToEat extends StatelessWidget {
             categoryTitle: categoryText,
             illustrationLink: illustrationLink,
           );
-        }));
+        })).then((value) => setState(() {}));
       },
       child: Container(
         height: 200,
@@ -141,37 +147,46 @@ class FindSomethingToEat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Find Something to Eat',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  someThingToEatCardBuilder(65, 'assets/images/lunch.svg',
-                      context, MealCategory.Vegetarian, 'blue'),
-                  someThingToEatCardBuilder(121, 'assets/images/seafood.svg',
-                      context, MealCategory.Seafood, 'pink'),
-                  someThingToEatCardBuilder(41, 'assets/images/dessert.svg',
-                      context, MealCategory.Dessert, 'blue'),
-                  someThingToEatCardBuilder(12, 'assets/images/salad.svg',
-                      context, MealCategory.Vegan, 'pink'),
-                  someThingToEatCardBuilder(31, 'assets/images/pasta.svg',
-                      context, MealCategory.Pasta, 'blue'),
-                  someThingToEatCardBuilder(65, 'assets/images/chicken.svg',
-                      context, MealCategory.Chicken, 'pink'),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
+    return Column(
+      children: [
+        TodayMeals(),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Find Something to Eat',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      someThingToEatCardBuilder(65, 'assets/images/lunch.svg',
+                          context, MealCategory.Vegetarian, 'blue'),
+                      someThingToEatCardBuilder(
+                          121,
+                          'assets/images/seafood.svg',
+                          context,
+                          MealCategory.Seafood,
+                          'pink'),
+                      someThingToEatCardBuilder(41, 'assets/images/dessert.svg',
+                          context, MealCategory.Dessert, 'blue'),
+                      someThingToEatCardBuilder(12, 'assets/images/salad.svg',
+                          context, MealCategory.Vegan, 'pink'),
+                      someThingToEatCardBuilder(31, 'assets/images/pasta.svg',
+                          context, MealCategory.Pasta, 'blue'),
+                      someThingToEatCardBuilder(65, 'assets/images/chicken.svg',
+                          context, MealCategory.Chicken, 'pink'),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
