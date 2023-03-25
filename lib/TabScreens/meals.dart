@@ -21,7 +21,7 @@ class MealsScreen extends StatelessWidget {
             padding: EdgeInsets.all(10),
             width: MediaQuery.of(context).size.width,
             child: Image.asset(
-              'assets/images/newwe.gif',
+              'assets/images/meals.gif',
               fit: BoxFit.contain,
             ),
           ),
@@ -61,7 +61,6 @@ class MealsScreen extends StatelessWidget {
               ],
             ),
           ),
-          TodayMeals(),
           FindSomethingToEat(),
         ],
       ),

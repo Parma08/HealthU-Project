@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: GetStartedScreen(),
+      home: TabsPage(),
       theme: appTheme,
       routes: {
         GetStartedScreen.routeName: (ctx) => GetStartedScreen(),
