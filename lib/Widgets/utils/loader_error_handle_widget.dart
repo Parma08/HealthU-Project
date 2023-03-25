@@ -245,3 +245,90 @@ Future mealDeletionConfirmation(
         );
       });
 }
+
+deleteWorkout(String workoutName, int workoutIndex) {
+  if (getSelectedWorkout[workoutIndex].length == 1) {
+    NotificationService()
+        .cancelNotification(getSelectedWorkout[workoutIndex][0].notificationID);
+  }
+  getSelectedWorkout[workoutIndex]
+      .removeWhere((element) => element.exerciseName == workoutName);
+}
+
+Future workoutDeletionConfirmation(
+    {required String workoutName,
+    required int workoutIndex,
+    required BuildContext context,
+    required String confirmationMessage}) {
+  return showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (_) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                gradient: primaryLinearGradient,
+                borderRadius: BorderRadius.circular(20)),
+            height: 260,
+            child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    Icons.delete_forever,
+                    color: Colors.red,
+                    size: 60,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  height: 60,
+                  child: Text(
+                    confirmationMessage,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Cancel',
+                            style: TextStyle(color: Colors.white),
+                          )),
+                      TextButton(
+                          onPressed: () {
+                            deleteWorkout(workoutName, workoutIndex);
+                            Navigator.of(context).pop();
+                          },
+                          child: Text(
+                            'Delete',
+                            style: TextStyle(color: Colors.red),
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
