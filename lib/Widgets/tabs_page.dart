@@ -19,8 +19,8 @@ class TabsPageState extends State<TabsPage> {
   final List<Map<String, dynamic>> pages = [
     {'screenWidget': HomeScreen(), 'tabBarTitle': ''},
     {'screenWidget': MealsScreen(), 'tabBarTitle': 'Meals'},
-    {'screenWidget': WorkoutScreen(), 'tabBarTitle': ''},
-    {'screenWidget': Camera_Screen(), 'tabBarTitle': ''},
+    {'screenWidget': WorkoutScreen(), 'tabBarTitle': 'Workouts'},
+    {'screenWidget': Camera_Screen(), 'tabBarTitle': 'Progress Tracker'},
     {'screenWidget': ProfileScreen(), 'tabBarTitle': 'Profile'},
   ];
   var pageIndex = 0;

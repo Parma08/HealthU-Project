@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +7,7 @@ import 'meal_modal.dart';
 
 late List<MealModal> selectedMeals = [];
 late List<List<SelectedWorkoutModal>> selectedWorkouts = [];
+late List<ImageModal> clickedImages = [];
 
 void setSelectedMeal(MealModal meal) {
   selectedMeals.insert(selectedMeals.length, meal);
@@ -81,4 +84,16 @@ void setSelectedWorkout(
 
 List<List<SelectedWorkoutModal>> get getSelectedWorkout {
   return selectedWorkouts;
+}
+
+void setImagePaths(ImageModal filepath) {
+  if (clickedImages.isEmpty) {
+    clickedImages.insert(0, filepath);
+    return;
+  }
+  clickedImages.insert(clickedImages.length - 1, filepath);
+}
+
+List<ImageModal> get getImagePaths {
+  return clickedImages;
 }

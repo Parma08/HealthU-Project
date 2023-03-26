@@ -1,4 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+
+class ImageModal {
+  File filepath;
+  DateTime imageClickDate;
+
+  ImageModal({required this.filepath, required this.imageClickDate});
+}
 
 class WorkoutCategoryByBodyPart {
   String categoryName;
