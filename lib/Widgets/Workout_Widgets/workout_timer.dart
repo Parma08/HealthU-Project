@@ -1,29 +1,37 @@
 import 'dart:async';
 
+import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 class WorkoutTimer extends StatefulWidget {
-  const WorkoutTimer({super.key});
+  int workoutIndex;
+  WorkoutTimer({required this.workoutIndex});
 
   @override
   State<WorkoutTimer> createState() => _WorkoutTimerState();
 }
 
 class _WorkoutTimerState extends State<WorkoutTimer> {
-  int hours = 00;
-  int minutes = 00;
-  int seconds = 00;
+  int hours = 0;
+  int minutes = 0;
+  int seconds = 0;
   Timer? timer;
 
   void startTimer() {
+    minutes = getSelectedWorkout[widget.workoutIndex][0].totalworkoutDuration;
+    while (minutes > 60) {
+      minutes = minutes - 60;
+      hours++;
+    }
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         seconds++;
         if (seconds == 60) {
           seconds = 0;
           minutes++;
+          setWorkoutTiming(widget.workoutIndex, hours * 60 + minutes);
         }
         if (minutes == 60) {
           minutes = 0;

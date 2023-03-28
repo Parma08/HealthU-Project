@@ -4,8 +4,6 @@ import 'package:fiteness_x/Widgets/Workout_Widgets/workout_info_screen.dart';
 import 'package:fiteness_x/Widgets/Workout_Widgets/workout_timer.dart';
 import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../modals/appGetterSetter.dart';
@@ -133,7 +131,9 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                           ],
                         ),
                       ),
-                      WorkoutTimer(),
+                      WorkoutTimer(
+                        workoutIndex: workoutIndex,
+                      ),
                     ],
                   ),
                   Container(

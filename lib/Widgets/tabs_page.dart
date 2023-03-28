@@ -1,11 +1,12 @@
 import 'package:fiteness_x/TabScreens/camera.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../screens/home_screen.dart';
 import 'package:fiteness_x/TabScreens/meals.dart';
 import 'package:fiteness_x/TabScreens/profile.dart';
 import 'package:fiteness_x/TabScreens/workout.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
+
+import '../TabScreens/home_screen.dart';
 
 class TabsPage extends StatefulWidget {
   static const routeName = '/tabs';

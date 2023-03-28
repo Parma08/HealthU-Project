@@ -53,7 +53,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 InkWell(
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                      return DailyWorkoutScheduleCalendar();
+                      return DailyWorkoutScheduleCalendar(
+                        initialDate: DateTime.now(),
+                      );
                     }));
                   },
                   child: Container(

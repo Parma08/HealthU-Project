@@ -1,6 +1,5 @@
 import 'package:fiteness_x/Widgets/Workout_Widgets/show_daily_workouts.dart';
 import 'package:fiteness_x/Widgets/Workout_Widgets/start_workout.dart';
-import 'package:fiteness_x/Widgets/meal_screen_widgets/daily_meal_schedule_widgets/show_daily_meal_by_category.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -8,6 +7,8 @@ import '../../../themes.dart';
 import '../utils/loader_error_handle_widget.dart';
 
 class DailyWorkoutScheduleCalendar extends StatefulWidget {
+  DateTime initialDate;
+  DailyWorkoutScheduleCalendar({required this.initialDate});
   @override
   State<DailyWorkoutScheduleCalendar> createState() =>
       _DailyWorkoutScheduleCalendarState();
@@ -25,9 +26,9 @@ class _DailyWorkoutScheduleCalendarState
     calendarDates = generateYearCalendar();
     scrollController = ScrollController();
     for (var i = 0; i < calendarDates.length; i++) {
-      if (calendarDates[i].day == DateTime.now().day &&
-          calendarDates[i].month == DateTime.now().month &&
-          calendarDates[i].year == DateTime.now().year) {
+      if (calendarDates[i].day == widget.initialDate.day &&
+          calendarDates[i].month == widget.initialDate.month &&
+          calendarDates[i].year == widget.initialDate.year) {
         activeIndex = i;
       }
       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

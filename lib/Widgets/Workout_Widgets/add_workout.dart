@@ -38,7 +38,7 @@ class _AddWorkoutState extends State<AddWorkout> {
         helpText: 'On which day will you do this workout',
         context: context,
         initialDate: widget.addingDate,
-        firstDate: DateTime.now(),
+        firstDate: DateTime.now().subtract(const Duration(days: 3)),
         lastDate: DateTime(
                 DateTime.now().year, DateTime.now().month, DateTime.now().day)
             .add(Duration(

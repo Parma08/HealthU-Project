@@ -97,7 +97,7 @@ class _AddMealModalState extends State<AddMealModal> {
         helpText: 'When will you have this meal?',
         context: context,
         initialDate: widget.addingDate,
-        firstDate: DateTime.now(),
+        firstDate: DateTime.now().subtract(const Duration(days: 3)),
         lastDate: DateTime(
                 DateTime.now().year, DateTime.now().month, DateTime.now().day)
             .add(Duration(

@@ -30,6 +30,7 @@ class SelectedWorkoutModal {
   int reps;
   String videoID;
   bool isCompleted;
+  int totalworkoutDuration;
 
   SelectedWorkoutModal({
     required this.notificationID,
@@ -41,6 +42,7 @@ class SelectedWorkoutModal {
     this.isCompleted = false,
     required this.sets,
     required this.videoID,
+    required this.totalworkoutDuration,
   });
 }
 
@@ -1240,5 +1242,226 @@ const List CATEGORY_DESCRIPTION = [
     'categoryName': 'strongman',
     'categoryDescription':
         'Strongman exercises are a type of strength training that involves lifting heavy objects and performing complex movements to develop full-body strength and power. Regular strongman training can provide numerous benefits, such as improving overall physical strength, increasing muscle mass, and boosting cardiovascular health. It also helps to improve grip strength, balance, and coordination. Additionally, strongman exercises can help to increase bone density, reduce the risk of injury, and improve overall athletic performance. Strongman training is also a great way to challenge yourself both physically and mentally, as it requires a high level of focus and mental toughness. Incorporating strongman exercises into your fitness routine can lead to a stronger, more powerful, and more resilient you.',
+  },
+];
+
+const List<Map> ARTICLES = [
+  {
+    "heading": "The Importance of Drinking Water",
+    "subheading": "Why Staying Hydrated Is Essential for Good Health",
+    "content":
+        "Drinking enough water is essential for maintaining good health. Water is necessary for numerous bodily functions, including regulating body temperature, lubricating joints, and transporting nutrients and oxygen to cells.\n\nDehydration can cause a variety of health problems, including headaches, fatigue, and constipation. It can also impair cognitive function and mood, and make it more difficult to perform physical tasks.\n\nTo ensure that you are getting enough water, it is recommended that you drink at least eight cups of water per day. You can also increase your water intake by eating water-rich fruits and vegetables, such as watermelon and cucumber, and by drinking other fluids, such as herbal tea or low-sugar fruit juice.",
+  },
+  {
+    "heading": "The Benefits of Regular Exercise",
+    "subheading": "How Exercise Can Improve Your Physical and Mental Health",
+    "content":
+        "Regular exercise has numerous benefits for both physical and mental health. It can help to improve cardiovascular health, reduce the risk of chronic diseases such as diabetes and cancer, and enhance cognitive function and mood.\n\nExercise can also help to maintain a healthy body weight and improve muscle strength and endurance. It can even help to promote healthy aging and increase lifespan.\n\nTo reap the benefits of exercise, it is recommended that adults engage in at least 150 minutes of moderate-intensity aerobic activity per week, or 75 minutes of vigorous-intensity activity per week. This can include activities such as brisk walking, cycling, swimming, or running.",
+  },
+  {
+    "heading": "The Dangers of a Sedentary Lifestyle",
+    "subheading": "Why Sitting Too Much Can Be Harmful to Your Health",
+    "content":
+        "Sitting for prolonged periods of time can be harmful to your health. Studies have linked sedentary behavior with an increased risk of chronic diseases such as diabetes, heart disease, and cancer.\n\nSitting for extended periods can also contribute to poor posture and muscle imbalances, which can lead to back and neck pain.\n\nTo combat the negative effects of a sedentary lifestyle, it is important to take frequent breaks from sitting and engage in regular physical activity. This can include standing and stretching every hour, taking short walks throughout the day, or using a standing desk or stability ball chair.",
+  },
+  {
+    "heading": "The Benefits of Yoga",
+    "subheading":
+        "How Practicing Yoga Can Improve Your Physical and Mental Health",
+    "content":
+        "Yoga is a mind-body practice that has been shown to have numerous benefits for physical and mental health. It can help to improve flexibility, balance, and strength, as well as reduce stress, anxiety, and depression.\n\nYoga can also help to improve respiratory function, lower blood pressure, and reduce chronic pain. It has even been shown to enhance immune function and promote healthy aging.\n\nTo start practicing yoga, it is recommended that you find a qualified instructor who can guide you through the poses and breathing techniques. There are many different types of yoga, so it is important to find a style that suits your needs and fitness level.",
+  },
+  {
+    "heading": "The Benefits of Meditation",
+    "subheading": "How Meditation Can Improve Your Mental and Physical Health",
+    "content":
+        "Meditation is a practice that has been used for thousands of years to promote relaxation, reduce stress, and enhance overall well-being. It can help to lower blood pressure, reduce symptoms of anxiety and depression, and improve sleep quality.\n\nMeditation can also enhance brain function and cognitive performance, and even increase gray matter density in the brain. It has also been shown to improve immune function and reduce inflammation.\n\nTo start meditating, it is recommended that you find a quiet, comfortable place to sit and focus on your breath or a specific word or phrase. There are many different types of meditation, so it is important to find a style that works best for you.",
+  },
+  {
+    "heading": "The Risks of Smoking",
+    "subheading": "Why Smoking Is Harmful to Your Health",
+    "content":
+        "Smoking is one of the leading causes of preventable death worldwide. It can increase the risk of numerous health problems, including lung cancer, heart disease, and stroke.\n\nSmoking can also damage the respiratory system, leading to chronic bronchitis and emphysema. It can also increase the risk of infection and impair wound healing.\n\nTo reduce the risk of these negative health effects, it is recommended that individuals quit smoking as soon as possible. There are many resources available to help individuals quit smoking, including nicotine replacement therapy and support groups.",
+  },
+  {
+    "heading": "The Importance of Sleep",
+    "subheading": "Why Getting Enough Sleep Is Essential for Good Health",
+    "content":
+        "Getting enough sleep is essential for maintaining good health. Sleep helps to regulate hormones, promote immune function, and repair and regenerate tissues and cells.\n\nLack of sleep can lead to a variety of health problems, including fatigue, poor concentration, and an increased risk of chronic diseases such as diabetes and obesity.\n\nTo ensure that you are getting enough sleep, it is recommended that adults aim for seven to nine hours of sleep per night. Establishing a regular sleep routine, avoiding caffeine and alcohol before bedtime, and creating a comfortable sleep environment can all help to promote better sleep.",
+  },
+  {
+    "heading": "The Benefits of Strength Training",
+    "subheading": "How Lifting Weights Can Improve Your Health",
+    "content":
+        "Strength training, also known as resistance training, is a type of exercise that involves lifting weights or using resistance bands to build muscle and improve overall fitness. It can help to increase muscle strength and endurance, improve bone density, and reduce the risk of injury.\n\nStrength training can also boost metabolism and promote weight loss, as well as enhance cognitive function and mood. It has even been shown to improve insulin sensitivity and lower blood sugar levels in individuals with diabetes.\n\nTo start strength training, it is recommended that you work with a qualified fitness professional who can help you develop a safe and effective program tailored to your goals and fitness level.",
+  },
+  {
+    "heading": "The Importance of Stretching",
+    "subheading":
+        "How Stretching Can Improve Your Flexibility, Posture, and Performance",
+    "content":
+        "Stretching is an important component of fitness that can help to improve flexibility, posture, and performance. It can help to reduce the risk of injury, improve range of motion, and even enhance athletic performance.\n\nStretching can also help to relieve muscle tension and soreness, and promote relaxation and stress relief. It can be incorporated into any exercise routine or done on its own as a way to improve overall flexibility and mobility.\n\nIt is important to stretch properly and gradually increase the intensity of your stretches over time to avoid injury. A qualified fitness professional can provide guidance and recommendations on the best stretching techniques and exercises for your individual needs.",
+  },
+  {
+    "heading": "The Power of Meditation",
+    "subheading":
+        "How Meditation Can Improve Your Mental Health and Well-being",
+    "content":
+        "Meditation is a mindfulness practice that involves focusing your attention on the present moment and observing your thoughts and feelings without judgment. It has been shown to reduce stress, anxiety, and depression, and improve overall mental health and well-being.\n\nMeditation can also help to improve sleep quality, reduce chronic pain, and enhance cognitive function and memory. It can be practiced anywhere and at any time, making it a convenient and effective way to manage stress and improve overall mental health.\n\nThere are many different types of meditation, from mindfulness meditation to loving-kindness meditation. It is important to find a type of meditation that works best for you and to practice regularly for maximum benefits.",
+  },
+  {
+    "heading": "The Benefits of a Plant-Based Diet",
+    "subheading":
+        "How Eating More Plant Foods Can Improve Your Health and Reduce Your Risk of Chronic Disease",
+    "content":
+        "A plant-based diet is one that is rich in fruits, vegetables, whole grains, legumes, nuts, and seeds, and low in animal products. It has been shown to reduce the risk of chronic diseases such as heart disease, diabetes, and cancer, and improve overall health and well-being.\n\nPlant-based diets are typically higher in fiber, vitamins, and minerals than diets that are high in animal products. They can also be lower in saturated fat and cholesterol, which can help to improve heart health.\n\nTo transition to a plant-based diet, it is recommended to start by incorporating more plant-based foods into your meals and gradually reducing your intake of animal products. A registered dietitian can provide guidance and recommendations on how to adopt a plant-based diet that meets your individual needs and preferences.",
+  },
+  {
+    "heading": "The Health Benefits of Swimming",
+    "subheading":
+        "How Swimming Can Help to Improve Your Cardiovascular Health, Muscle Strength, and Mental Health",
+    "content":
+        "Swimming is a great form of exercise that can provide numerous health benefits. It can help to improve cardiovascular health, increase muscle strength, and promote weight loss and maintenance.\n\nSwimming is also a low-impact exercise that can be easier on the joints than other forms of exercise, making it a good option for individuals with joint pain or injuries. Additionally, it can promote relaxation and stress relief, making it a great way to improve overall mental health and well-being.\n\nTo get the most out of swimming, it is important to practice proper technique and gradually increase the intensity of your workouts over time.",
+  },
+  {
+    "heading": "The Benefits of Strength Training",
+    "subheading":
+        "How Resistance Training Can Help to Improve Muscle Strength, Bone Density, and Metabolic Health",
+    "content":
+        "Strength training, also known as resistance training, involves using weights or resistance bands to build muscle strength and improve overall fitness. It can help to increase muscle mass, improve bone density, and boost metabolic health.\n\nStrength training can also help to reduce the risk of chronic diseases such as heart disease, diabetes, and osteoporosis, and improve overall health and well-being. It can be done at home or in a gym, and can be modified to suit individuals of all fitness levels.\n\nTo get the most out of strength training, it is important to use proper form and technique, and to gradually increase the weight or resistance used over time.",
+  },
+  {
+    "heading": "Healthy Skin: Tips for Maintaining Optimal Skin Health",
+    "subheading": "A Guide to Protecting and Maintaining Your Skin Health",
+    "content":
+        "Maintaining healthy skin is important for both appearance and overall health. Here are some tips for protecting and maintaining healthy skin:\n\n1. Protect your skin from the sun with sunscreen and protective clothing\n2. Moisturize regularly to keep your skin hydrated\n3. Eat a healthy diet that is rich in vitamins and minerals\n4. Avoid smoking and excessive alcohol consumption\n5. Practice good hygiene to prevent skin infections\n\nBy following these tips, you can help to protect your skin and maintain a healthy, youthful appearance."
+  },
+  {
+    "heading": "The Benefits of Yoga",
+    "subheading":
+        "How Yoga Can Improve Flexibility, Strength, and Overall Mental Health",
+    "content":
+        "Yoga is a mind-body practice that involves physical postures, breathing techniques, and meditation. It can help to improve flexibility, strength, and balance, as well as promote relaxation and stress relief.\n\nYoga has been shown to improve overall mental health and well-being, reducing stress, anxiety, and depression, and improving cognitive function and memory. It can be practiced by individuals of all fitness levels and can be modified to suit individual needs and preferences.\n\nTo get the most out of yoga, it is important to find a qualified instructor and to practice regularly, aiming for at least 30 minutes per day.",
+  },
+  {
+    "heading": "The Dangers of Sitting Too Much",
+    "subheading":
+        "How Sedentary Behavior Can Contribute to Chronic Disease and Poor Health",
+    "content":
+        "Sitting for prolonged periods of time has been shown to contribute to chronic diseases such as obesity, diabetes, and heart disease. It can also lead to poor posture, muscle weakness, and reduced flexibility.\n\nTo combat the negative effects of sitting, it is important to engage in regular physical activity, take frequent breaks from sitting, and incorporate more movement into your daily routine. This can include taking the stairs instead of the elevator, standing during phone calls, and taking short walks throughout the day.\n\nIt is also important to maintain good posture while sitting, with your feet flat on the floor, your back straight, and your shoulders relaxed.",
+  },
+  {
+    "heading": "Tips for Reducing Screen Time",
+    "subheading": "Reducing Phone Addiction",
+    "content":
+        "Phone addiction is a growing problem in today's society. Here are some tips for reducing screen time:\n\n1. Setting boundaries and limits on phone use\n2. Finding alternative activities to fill downtime\n3. Turning off notifications and putting the phone away during meals\n4. Using apps that track and limit phone use\n\nBy taking steps to reduce phone addiction, individuals can improve their mental health and well-being."
+  },
+  {
+    "heading": "The Benefits of Mindful Eating",
+    "subheading":
+        "How Practicing Mindful Eating Can Help to Improve Your Relationship with Food and Promote Healthy Eating Habits",
+    "content":
+        "Mindful eating involves paying attention to your food and your body's hunger and fullness signals, and being present in the moment while you eat. This can help to improve your relationship with food, reduce overeating, and promote healthy eating habits.\n\nMindful eating has also been shown to reduce stress, improve digestion, and increase overall satisfaction with meals. To practice mindful eating, it is important to eat slowly, savor the flavors and textures of your food, and pay attention to your body's signals of hunger and fullness.",
+  },
+  {
+    "heading": "The Benefits of Strength Training for Women",
+    "subheading": "Why Women Should Strength Train",
+    "content":
+        "Strength training is often associated with men, but it can be incredibly beneficial for women as well. Here are some benefits of strength training for women:\n\n1. Building stronger muscles and bones\n2. Improving balance and coordination\n3. Boosting metabolism and weight loss\n4. Reducing the risk of injury\n\nBy incorporating strength training into their exercise routines, women can improve their physical and mental health."
+  },
+  {
+    "heading": "The Role of Diet in Women's Health",
+    "subheading": "Eating a Healthy Diet for Women's Health",
+    "content":
+        "A healthy diet is essential for maintaining good health, especially for women. Here are some tips for eating a healthy diet:\n\n1. Eating a variety of fruits, vegetables, and whole grains\n2. Choosing lean protein sources\n3. Limiting processed and sugary foods\n4. Staying hydrated\n\nBy nourishing their bodies with healthy foods, women can support their physical and mental well-being."
+  },
+  {
+    "heading": "The Importance of Cardiovascular Exercise for Women",
+    "subheading": "Benefits of Cardiovascular Exercise for Women",
+    "content":
+        "Cardiovascular exercise is important for maintaining good health, especially for women. Here are some benefits of cardiovascular exercise for women:\n\n1. Improving heart health\n2. Reducing the risk of chronic diseases\n3. Boosting mood and mental health\n4. Supporting weight loss\n\nBy incorporating cardiovascular exercise into their routines, women can improve their overall health and well-being."
+  },
+  {
+    "heading": "The Harmful Effects of Pornography Addiction",
+    "subheading": "Overcoming Pornography Addiction",
+    "content":
+        "Pornography addiction is a serious issue that can have harmful effects on an individual's mental and physical health. Here are some tips for overcoming pornography addiction:\n\n1. Acknowledging the addiction and seeking help\n2. Identifying triggers and avoiding them\n3. Developing healthy coping mechanisms\n4. Creating a support network\n\nBy taking steps to overcome pornography addiction, individuals can improve their relationships and overall well-being."
+  },
+  {
+    "heading": "Knee Health: Preventing Injury and Managing Pain",
+    "subheading": "A Guide to Keeping Your Knees Healthy and Pain-Free",
+    "content":
+        "Knee pain and injuries are common, but there are steps you can take to prevent them and manage pain when it occurs. Here are some tips for maintaining healthy knees:\n\n1. Stay active and maintain a healthy weight\n2. Warm up before exercising and cool down after\n3. Wear proper footwear and protective gear when playing sports\n4. Strengthen the muscles around your knees\n5. Avoid activities that put excessive stress on your knees\n\nIf you experience knee pain or injury, rest and apply ice to reduce inflammation. Over-the-counter pain relievers and physical therapy may also be helpful. In some cases, surgery may be necessary to repair damage to the knee."
+  },
+  {
+    "heading": "The Importance of Hydration",
+    "subheading":
+        "How Staying Hydrated Can Help to Improve Your Physical and Mental Health",
+    "content":
+        "Drinking enough water and staying hydrated is essential for good health. It can help to regulate body temperature, improve digestion, and support healthy skin and hair.\n\nStaying hydrated can also improve mental clarity and cognitive function, reduce fatigue and headaches, and boost overall energy levels. To ensure that you are getting enough water, it is recommended to drink at least eight 8-ounce glasses of water per day.",
+  },
+  {
+    "heading": "Superfoods for Weight Loss: Do They Really Work?",
+    "subheading":
+        "An Examination of the Effectiveness of Superfoods for Weight Loss",
+    "content":
+        "While superfoods are known for their health benefits, some people believe that certain superfoods can also promote weight loss. However, there is no single food or group of foods that can guarantee weight loss.\n\nThat being said, some superfoods can be helpful for weight loss when consumed as part of a healthy diet and lifestyle. For example, foods that are high in fiber and protein can help to promote feelings of fullness and reduce overall calorie intake.\n\nSome superfoods that may be helpful for weight loss include berries, leafy greens, whole grains, nuts, and seeds. However, it is important to remember that weight loss is not solely dependent on what you eat, but also on factors such as exercise and overall calorie intake."
+  },
+  {
+    "heading": "The Impact of Social Media Addiction on Mental Health",
+    "subheading": "Addressing Social Media Addiction",
+    "content":
+        "Social media addiction is a growing problem that can have negative effects on an individual's mental health. Here are some tips for addressing social media addiction:\n\n1. Setting limits on social media use\n2. Unplugging from social media for designated periods of time\n3. Finding alternative activities to fill downtime\n4. Seeking professional help if needed\n\nBy taking steps to address social media addiction, individuals can improve their mental health and well-being."
+  },
+  {
+    "heading": "Common Sexual Health Problems and How to Treat Them",
+    "subheading":
+        "An Overview of the Most Common Sexual Health Issues and Their Treatments",
+    "content":
+        "Sexual health problems can affect people of all ages and genders, and they can have a negative impact on relationships and overall quality of life. Some common sexual health problems include erectile dysfunction, premature ejaculation, low libido, and vaginal dryness.\n\nTreatment options for sexual health problems can vary depending on the underlying cause. In some cases, lifestyle changes such as exercise and improved nutrition can help to improve sexual function. In other cases, medications or therapy may be necessary.\n\nIt is important to talk to a healthcare provider if you are experiencing sexual health problems, as they can provide guidance and recommend appropriate treatment options."
+  },
+  {
+    "heading": "The Benefits of Outdoor Exercise",
+    "subheading":
+        "How Exercising Outdoors Can Improve Your Physical and Mental Health",
+    "content":
+        "Exercising outdoors can provide numerous health benefits, including improved cardiovascular health, increased muscle strength, and reduced stress and anxiety.\n\nExposure to natural light and fresh air can also improve mood and mental health, boost energy levels, and enhance overall feelings of well-being. To get the most out of outdoor exercise, it is important to dress appropriately for the weather, wear sunscreen, and stay hydrated."
+  },
+  {
+    "heading": "Ayurvedic Medicine: Understanding the Basics",
+    "subheading": "An Overview of the Ancient Indian System of Medicine",
+    "content":
+        "Ayurveda is an ancient Indian system of medicine that has been practiced for thousands of years. It is based on the idea that the body, mind, and spirit are interconnected, and that health is achieved by balancing these elements.\n\nAyurvedic medicine uses a variety of natural treatments, including herbal remedies, massage, and dietary changes, to promote healing and prevent disease. It is often used in combination with modern medicine to provide a holistic approach to health and wellness."
+  },
+  {
+    "heading": "The Role of Nutrition in Sexual Health",
+    "subheading": "How What You Eat Can Affect Your Sex Life",
+    "content":
+        "Good nutrition is important for overall health, and it can also have an impact on sexual health. Eating a balanced diet that includes plenty of fruits, vegetables, whole grains, and lean proteins can help to improve circulation, boost energy levels, and promote hormonal balance, all of which are important for sexual health.\n\nIn addition, certain foods have been shown to have aphrodisiac properties, such as oysters, chocolate, and strawberries. However, it is important to remember that there is no magic food that can guarantee sexual prowess.\n\nIt is also important to avoid excessive alcohol consumption and to limit the intake of foods that are high in saturated and trans fats, which can have a negative impact on cardiovascular health and sexual function."
+  },
+  {
+    "heading": "The Pros and Cons of Modern Medicine",
+    "subheading":
+        "A Look at the Advantages and Disadvantages of Western Medicine",
+    "content":
+        "Modern medicine, also known as Western medicine, is based on scientific research and uses advanced technology to diagnose and treat illnesses. It has led to many life-saving advancements, such as antibiotics, vaccines, and surgical procedures.\n\nHowever, modern medicine can also have side effects and may not always address the root cause of a health problem. It can also be expensive and inaccessible to some people. It is important to weigh the pros and cons of modern medicine and consider alternative approaches to healthcare when appropriate."
+  },
+  {
+    "heading": "How to Improve Your Mental Health",
+    "subheading": "Simple Strategies for Boosting Your Emotional Well-being",
+    "content":
+        "Mental health is just as important as physical health, and taking care of your emotional well-being can have a positive impact on all areas of your life. There are many simple strategies you can use to improve your mental health, such as:\n\n- Practicing mindfulness and meditation\n- Getting regular exercise\n- Spending time in nature\n- Engaging in creative hobbies\n- Building strong social connections\n\nIt is also important to seek professional help if you are struggling with mental health issues such as depression, anxiety, or addiction."
+  },
+  {
+    "heading": "The Link Between Exercise and Sexual Health",
+    "subheading": "How Physical Activity Can Improve Your Sex Life",
+    "content":
+        "Regular exercise can have a positive impact on sexual health in both men and women. Exercise helps to improve circulation, boost energy levels, and increase stamina, all of which can enhance sexual performance.\n\nIn addition, exercise can reduce stress and anxiety, which can have a negative impact on sexual function. Exercise also releases endorphins, which can improve mood and promote feelings of pleasure and well-being.\n\nTo reap the benefits of exercise for sexual health, it is recommended to engage in moderate physical activity for at least 30 minutes a day, most days of the week."
+  },
+  {
+    "heading": "10 Superfoods You Should Add to Your Diet",
+    "subheading": "These Nutrient-Packed Foods Can Boost Your Health",
+    "content":
+        "Superfoods are foods that are packed with nutrients and are thought to provide a wide range of health benefits. Here are 10 superfoods you should consider adding to your diet:\n\n1. Blueberries - Rich in antioxidants and fiber, blueberries are great for heart health and brain function.\n\n2. Kale - A nutrient-dense leafy green, kale is high in vitamins A, C, and K, and is thought to have anti-inflammatory properties.\n\n3. Quinoa - A versatile grain that is high in protein, fiber, and essential nutrients.\n\n4. Salmon - Rich in omega-3 fatty acids, salmon is great for heart health and brain function.\n\n5. Avocado - A source of healthy fats and fiber, avocado is great for heart health and may help to lower cholesterol.\n\n6. Almonds - A great source of protein and healthy fats, almonds are thought to have a range of health benefits.\n\n7. Turmeric - A spice with anti-inflammatory properties, turmeric is often used in curry dishes and can be added to smoothies and other recipes.\n\n8. Sweet Potatoes - A good source of fiber, vitamins, and minerals, sweet potatoes are also thought to have anti-inflammatory properties.\n\n9. Spinach - Another nutrient-dense leafy green, spinach is high in vitamins A and C, and is thought to have anti-cancer properties.\n\n10. Greek Yogurt - High in protein and probiotics, Greek yogurt is a great snack or addition to smoothies and other recipes."
   },
 ];

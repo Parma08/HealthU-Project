@@ -8,6 +8,15 @@ import 'meal_modal.dart';
 late List<MealModal> selectedMeals = [];
 late List<List<SelectedWorkoutModal>> selectedWorkouts = [];
 late List<ImageModal> clickedImages = [];
+late int waterGoal = 4;
+
+void setWaterGoals(int goal) {
+  waterGoal = goal;
+}
+
+int get getWaterGoal {
+  return waterGoal;
+}
 
 void setSelectedMeal(MealModal meal) {
   selectedMeals.insert(selectedMeals.length, meal);
@@ -40,6 +49,7 @@ void setSelectedWorkout(
               sets: sets[i],
               reps: reps[i],
               videoID: videoID[i],
+              totalworkoutDuration: 0,
               workoutTime: time));
       continue;
     }
@@ -50,6 +60,7 @@ void setSelectedWorkout(
             exerciseName: selectedExercises[i],
             exerciseDescription: exerciseDescription[i],
             workoutDate: date,
+            totalworkoutDuration: 0,
             sets: sets[i],
             reps: reps[i],
             videoID: videoID[i],
@@ -84,6 +95,12 @@ void setSelectedWorkout(
 
 List<List<SelectedWorkoutModal>> get getSelectedWorkout {
   return selectedWorkouts;
+}
+
+void setWorkoutTiming(int workoutIndex, int duration) {
+  for (var i = 0; i < selectedWorkouts[workoutIndex].length; i++) {
+    selectedWorkouts[workoutIndex][i].totalworkoutDuration = duration;
+  }
 }
 
 void setImagePaths(ImageModal filepath) {
