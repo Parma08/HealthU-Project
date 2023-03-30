@@ -1,4 +1,6 @@
 import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
+import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:fiteness_x/modals/meal_modal.dart';
 import 'package:fiteness_x/services/notification_service.dart';
 import 'package:flutter/material.dart';
@@ -160,12 +162,8 @@ class _AddMealModalState extends State<AddMealModal> {
         }
       }
     }
-    notificationService.sendNotification(
-        id: (date.day + date.month + date.year + time.hour + time.minute),
-        date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
-        title: 'Meal Time!',
-        body: 'Time to make ${widget.mealName}');
-    setSelectedMeal(MealModal(
+    showDialogLoader(ctx);
+    final status = await setSelectedMeal(MealModal(
         mealId: widget.mealId,
         mealName: widget.mealName,
         imageLink: widget.imageLink,
@@ -174,7 +172,17 @@ class _AddMealModalState extends State<AddMealModal> {
         date: date,
         notifications: true,
         mealCategory: getMealCategoryEnumValue(widget.mealCategory)));
+    Navigator.of(ctx).pop();
+    if (status != SUCCESS_MESSAGE) {
+      showErrorDialogWithoutRetry(context, status);
+      return;
+    }
 
+    notificationService.sendNotification(
+        id: (date.day + date.month + date.year + time.hour + time.minute),
+        date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
+        title: 'Meal Time!',
+        body: 'Time to make ${widget.mealName}');
     Future.delayed(Duration(seconds: 1), () {
       Navigator.of(ctx).pop(); //For dialog
       Navigator.of(ctx).pop(); //For bottom modal

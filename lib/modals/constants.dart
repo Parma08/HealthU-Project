@@ -56,6 +56,8 @@ class WorkoutCategoryByType {
       required this.imageLink});
 }
 
+const String SUCCESS_MESSAGE = 'yayyy';
+
 List<WorkoutCategoryByType> WORKOUT_CATEGORY_BY_TYPE = [
   WorkoutCategoryByType(
       categoryName: 'Cardio',

@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:fiteness_x/Widgets/Workout_Widgets/workout_info_screen.dart';
 import 'package:fiteness_x/Widgets/Workout_Widgets/workout_timer.dart';
 import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../../modals/appGetterSetter.dart';
@@ -86,12 +88,12 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(top: 50),
-                      height: 200,
-                      width: 200,
+                      margin: EdgeInsets.only(top: 10, bottom: 20),
+                      height: 300,
+                      width: 300,
                       child: SvgPicture.asset(
-                        'assets/images/workout_completed_tick.svg',
-                        fit: BoxFit.cover,
+                        'assets/images/workout_completed.svg',
+                        fit: BoxFit.contain,
                       ),
                     ),
                     Container(

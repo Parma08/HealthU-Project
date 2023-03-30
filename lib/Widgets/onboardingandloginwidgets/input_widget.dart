@@ -61,7 +61,10 @@ class _InputWidgetState extends State<InputWidget> {
               padding: EdgeInsets.only(left: 10),
               width: MediaQuery.of(context).size.width * 0.7,
               child: TextField(
-                obscureText: widget.labelName == 'Password' ? true : false,
+                obscureText: widget.labelName == 'Password' ||
+                        widget.labelName == 'Confirm Password'
+                    ? true
+                    : false,
                 focusNode: focusnode,
                 style: const TextStyle(
                     color: Color.fromARGB(255, 31, 31, 31), fontSize: 16),

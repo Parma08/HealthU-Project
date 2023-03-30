@@ -1,3 +1,6 @@
+import 'package:fiteness_x/Widgets/onboardingandloginwidgets/complete_your_profile.dart';
+import 'package:fiteness_x/screens/login_screen.dart';
+
 import './create_account_page.dart';
 import './introduction_screen.dart';
 import 'package:fiteness_x/themes.dart';
@@ -8,6 +11,7 @@ class GetStartedScreen extends StatelessWidget {
 
   void gotoIntroductionPage(BuildContext context) {
     Navigator.of(context).pushNamed(IntroductionScreen.routeName, arguments: {
+      'progressPercent': 0.25,
       'icon': 'assets/images/intro_one.svg',
       'titleText': 'Track Your Goal',
       'bodyText':
@@ -18,6 +22,7 @@ class GetStartedScreen extends StatelessWidget {
 
   void gotoSecondIntroductionPage(BuildContext context) {
     Navigator.of(context).pushNamed(IntroductionScreen.routeName, arguments: {
+      'progressPercent': 0.50,
       'icon': 'assets/images/intro_two.svg',
       'titleText': 'Get Burn',
       'bodyText':
@@ -28,6 +33,7 @@ class GetStartedScreen extends StatelessWidget {
 
   void gotoThirdIntroductionPage(BuildContext context) {
     Navigator.of(context).pushNamed(IntroductionScreen.routeName, arguments: {
+      'progressPercent': 0.75,
       'icon': 'assets/images/intro_three.svg',
       'titleText': 'Eat Well',
       'bodyText':
@@ -38,6 +44,7 @@ class GetStartedScreen extends StatelessWidget {
 
   void gotoFourthIntroductionPage(BuildContext context) {
     Navigator.of(context).pushNamed(IntroductionScreen.routeName, arguments: {
+      'progressPercent': 1.0,
       'icon': 'assets/images/intro_four.svg',
       'titleText': 'Improve Sleep  Quality',
       'bodyText':
@@ -47,7 +54,7 @@ class GetStartedScreen extends StatelessWidget {
   }
 
   void gotoCreateAccount(BuildContext context) {
-    Navigator.of(context).pushNamed(CreateAccount.routeName);
+    Navigator.of(context).pushNamed(LoginScreen.routeName);
   }
 
   @override

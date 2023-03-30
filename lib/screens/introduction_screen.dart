@@ -13,7 +13,7 @@ class IntroductionScreen extends StatelessWidget {
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       height: double.infinity,
       width: double.infinity,
-      color: Color(0xFFFFEDE5),
+      color: Colors.white,
       child: Column(
         children: [
           Container(
@@ -51,23 +51,37 @@ class IntroductionScreen extends StatelessWidget {
               child: Container(
             width: double.infinity,
             alignment: Alignment(0.9, 0.7),
-            child: InkWell(
-                onTap: () {
-                  routeArgs['onTapMethod'](context);
-                },
-                child: Container(
-                  child: Container(
-                    height: 60,
-                    width: 60,
-                    child: Icon(
-                      Icons.navigate_next,
-                      color: Colors.white,
-                    ),
-                    decoration: BoxDecoration(
-                        gradient: primaryLinearGradient,
-                        borderRadius: BorderRadius.circular(30)),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  height: 68,
+                  width: 68,
+                  child: CircularProgressIndicator(
+                    color: Color(0xFF92A3FD),
+                    strokeWidth: 2,
+                    value: routeArgs['progressPercent'],
                   ),
-                )),
+                ),
+                InkWell(
+                    onTap: () {
+                      routeArgs['onTapMethod'](context);
+                    },
+                    child: Container(
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        child: Icon(
+                          Icons.navigate_next,
+                          color: Colors.white,
+                        ),
+                        decoration: BoxDecoration(
+                            gradient: primaryLinearGradient,
+                            shape: BoxShape.circle),
+                      ),
+                    )),
+              ],
+            ),
           )),
         ],
       ),

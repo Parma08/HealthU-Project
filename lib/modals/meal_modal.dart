@@ -1,6 +1,9 @@
+import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 
 enum MealType { Breakfast, Lunch, Dinner, Snack }
+
+enum Gender { male, female, others }
 
 enum MealCategory {
   Beef,
@@ -38,5 +41,36 @@ class MealModal {
     required this.date,
     required this.notifications,
     required this.mealCategory,
+  });
+}
+
+class UserModal {
+  String userId;
+  String firstName;
+  String lastName;
+  DateTime dateOfBirth;
+  int weightInKgs;
+  int heightInCM;
+  int? waterGoalsInLiters;
+  MealModal? selectedMeals;
+  SelectedWorkoutModal? selectedWorkouts;
+  Gender gender;
+  double bmi;
+  double bmr;
+  double ibw;
+  UserModal({
+    required this.userId,
+    required this.firstName,
+    required this.lastName,
+    required this.dateOfBirth,
+    required this.gender,
+    required this.weightInKgs,
+    required this.heightInCM,
+    required this.bmi,
+    required this.bmr,
+    required this.ibw,
+    this.selectedMeals,
+    this.selectedWorkouts,
+    this.waterGoalsInLiters,
   });
 }

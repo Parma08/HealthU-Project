@@ -1,22 +1,68 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fiteness_x/Screens/create_account_page.dart';
-import 'package:fiteness_x/Widgets/social_login_buttons.dart';
+import 'package:fiteness_x/Widgets/Home_Screen_Widgets/reset_password_screen.dart';
+import 'package:fiteness_x/Widgets/onboardingandloginwidgets/complete_your_profile.dart';
+import 'package:fiteness_x/Widgets/onboardingandloginwidgets/welcome_screen.dart';
 import 'package:fiteness_x/Widgets/tabs_page.dart';
+import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../Widgets/onboardingandloginwidgets/input_widget.dart';
+import '../Widgets/onboardingandloginwidgets/social_login_buttons.dart';
 import '../themes.dart';
-import '../Widgets/input_widget.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const routeName = '/loginscreen';
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = TextEditingController();
+
   TextEditingController password = TextEditingController();
+
+  bool isLoading = false;
+
+  Future login(BuildContext context) async {
+    if (email.text.isEmpty || password.text.isEmpty) {
+      showErrorDialogWithoutRetry(context, 'Please fill all the Credentials');
+      return;
+    }
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text.trim(),
+        password: password.text.trim(),
+      );
+
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) {
+        return WelcomeScreen();
+      }), (route) => false);
+    } on FirebaseAuthException catch (e) {
+      showErrorDialogWithoutRetry(
+          context,
+          e.message
+              .toString()
+              .split('.')[0]
+              .replaceFirst('identifier', 'email'));
+    }
+
+    isLoading = false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: Stack(
+      children: [
+        if (isLoading) Loader(),
+        Container(
             height: MediaQuery.of(context).size.height,
             child: SingleChildScrollView(
               child: Column(
@@ -45,20 +91,25 @@ class LoginScreen extends StatelessWidget {
                       labelName: 'Password',
                       textController: password,
                       iconName: Icons.lock_outline),
-                  const Text(
-                    'Forgot your password',
-                    style: TextStyle(
-                        color: Color(0xFFADA4A5),
-                        fontSize: 10,
-                        decoration: TextDecoration.underline),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context)
+                          .pushNamed(ResetPasswordScreen.routeName);
+                    },
+                    child: Text(
+                      'Forgot your password',
+                      style: TextStyle(
+                          color: Color(0xFFADA4A5),
+                          fontSize: 10,
+                          decoration: TextDecoration.underline),
+                    ),
                   ),
                   SizedBox(
                     height: 90,
                   ),
                   GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .pushReplacementNamed(TabsPage.routeName);
+                        login(context);
                       },
                       child: Container(
                         width: double.infinity,
@@ -122,13 +173,15 @@ class LoginScreen extends StatelessWidget {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.of(context)
-                                    .pushNamed(CreateAccount.routeName);
+                                    .pushNamed(CompleteYourProfile.routeName);
                               },
                             text: 'Register',
                             style: TextStyle(color: Color(0xFFC58BF2)))
                       ])),
                 ],
               ),
-            )));
+            )),
+      ],
+    ));
   }
 }

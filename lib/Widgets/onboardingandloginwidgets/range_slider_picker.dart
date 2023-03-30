@@ -1,22 +1,30 @@
-import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
-import 'package:fiteness_x/modals/appGetterSetter.dart';
-import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:vibration/vibration.dart';
 
-class EditWaterGoal extends StatefulWidget {
-  const EditWaterGoal({super.key});
+class RangeSliderPicker extends StatefulWidget {
+  int minumumValue;
+  int maximumValue;
+  int initialValue;
+  String heading;
+  String units;
+  int pickerValue = 100;
+  RangeSliderPicker(
+      {required this.minumumValue,
+      required this.maximumValue,
+      required this.initialValue,
+      required this.heading,
+      required this.units}) {
+    pickerValue = initialValue;
+  }
 
   @override
-  State<EditWaterGoal> createState() => _EditWaterGoalState();
+  State<RangeSliderPicker> createState() => _RangeSliderPickerState();
 }
 
-class _EditWaterGoalState extends State<EditWaterGoal> {
-  int waterGoal = getWaterGoal;
-
+class _RangeSliderPickerState extends State<RangeSliderPicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,7 +35,7 @@ class _EditWaterGoalState extends State<EditWaterGoal> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            'Choose Daily Goals\n(In Liters)',
+            '${widget.heading}\n(In ${widget.units})',
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
           ),
@@ -41,34 +49,25 @@ class _EditWaterGoalState extends State<EditWaterGoal> {
                       color: Color.fromRGBO(158, 158, 158, 0.3), blurRadius: 5)
                 ]),
             child: NumberPicker(
-                minValue: 2,
-                maxValue: 16,
-                value: waterGoal,
+                minValue: widget.minumumValue,
+                maxValue: widget.maximumValue,
+                value: widget.pickerValue,
                 onChanged: (value) {
                   try {
                     Vibration.vibrate(duration: 20);
                   } catch (e) {
                     print('Virbrator cannot be used - $e');
                   }
-
                   setState(() {
-                    waterGoal = value;
+                    widget.pickerValue = value;
                   });
                 }),
           ),
           Align(
             alignment: Alignment(0.6, 0),
             child: TextButton(
-                onPressed: () async {
-                  showDialogLoader(context);
-                  final status = await setWaterGoals(waterGoal);
-                  Navigator.of(context).pop();
-                  if (status != SUCCESS_MESSAGE) {
-                    showErrorDialogWithoutRetry(context, status.toString());
-                    return;
-                  } else {
-                    Navigator.of(context).pop();
-                  }
+                onPressed: () {
+                  Navigator.of(context).pop(widget.pickerValue);
                 },
                 child: Text(
                   'Done',

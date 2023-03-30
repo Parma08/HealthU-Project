@@ -158,7 +158,7 @@ class _EditWorkoutBottomSheetState extends State<EditWorkoutBottomSheet> {
                   gradient: primaryLinearGradient,
                   borderRadius: BorderRadius.circular(100)),
               child: const Text(
-                'Edit Sets and Reps',
+                'Done',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,

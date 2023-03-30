@@ -70,12 +70,17 @@ class _PastWorkoutsListState extends State<PastWorkoutsList> {
           })).then((value) => setState(() {}));
         },
         child: Container(
-          decoration: BoxDecoration(color: Colors.white, boxShadow: [
-            BoxShadow(color: Color.fromRGBO(158, 158, 158, 0.4), blurRadius: 5)
-          ]),
+          padding: EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                    color: Color.fromRGBO(158, 158, 158, 0.4), blurRadius: 5)
+              ]),
           width: MediaQuery.of(context).size.width * 0.9,
           margin: EdgeInsets.symmetric(vertical: 10),
-          height: 90,
+          height: 120,
           child: LayoutBuilder(builder: (_, constraints) {
             return Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,7 +113,10 @@ class _PastWorkoutsListState extends State<PastWorkoutsList> {
                         margin: EdgeInsets.only(bottom: 10),
                         child: Text(
                             '${pastWorkouts[index].length} Exercises | ${pastWorkouts[index][0].totalworkoutDuration} Minutes',
-                            style: TextStyle(fontSize: 14)),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF100C0C))),
                       ),
                       Container(
                         height: 20,
@@ -129,9 +137,11 @@ class _PastWorkoutsListState extends State<PastWorkoutsList> {
                                     ],
                                     begin: Alignment.bottomRight,
                                     end: Alignment.centerLeft),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(100),
-                                    bottomLeft: Radius.circular(100))),
+                                borderRadius: completionPercentage > 0.95
+                                    ? BorderRadius.circular(100)
+                                    : BorderRadius.only(
+                                        topLeft: Radius.circular(100),
+                                        bottomLeft: Radius.circular(100))),
                           ),
                         ),
                       )

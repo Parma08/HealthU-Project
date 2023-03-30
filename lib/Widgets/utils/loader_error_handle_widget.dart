@@ -17,6 +17,81 @@ class Loader extends StatelessWidget {
   }
 }
 
+void showDialogLoader(BuildContext context) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(), // loading spinner
+            SizedBox(width: 20), // add some space
+            Text("Loading..."), // text label
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Future showErrorDialogWithoutRetry(BuildContext context, String errorMessage) {
+  return showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (_) {
+        return Dialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+                gradient: primaryLinearGradient,
+                borderRadius: BorderRadius.circular(20)),
+            height: 260,
+            child: Column(
+              children: [
+                Container(
+                  height: 100,
+                  width: 100,
+                  child: SvgPicture.asset(
+                    'assets/images/cross.svg',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  height: 60,
+                  child: Text(
+                    errorMessage,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: double.infinity,
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'OK',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      });
+}
+
 Future showSuccessDialog(
     {required BuildContext context, required String successMessage}) {
   return showDialog(

@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/home_page_indicator.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/past_workouts.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/water_intake.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
-import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("IDD ${getUserDetails.userId}");
     return Container(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).padding.top,
@@ -70,9 +71,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'Welcome Back,',
-                      style: TextStyle(fontSize: 12, color: Color(0xFFADA4A5)),
+                    GestureDetector(
+                      onTap: () {
+                        FirebaseAuth.instance.signOut();
+                      },
+                      child: Container(
+                        child: Text(
+                          'Welcome Back,',
+                          style:
+                              TextStyle(fontSize: 12, color: Color(0xFFADA4A5)),
+                        ),
+                      ),
                     ),
                     Text(
                       'Parmanand Singh',

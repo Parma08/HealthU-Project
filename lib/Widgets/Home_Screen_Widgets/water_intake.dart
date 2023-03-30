@@ -1,9 +1,12 @@
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/edit_water_goal.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
+import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../themes.dart';
 
@@ -91,9 +94,21 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                           )),
                     ),
                     IconButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final status = await changeWaterConsumedInDatabase(
+                            currentWaterIntake);
+
                         setState(() {
-                          currentWaterIntake = currentWaterIntake + 0.25;
+                          try {
+                            Vibration.vibrate(duration: 40);
+                          } catch (e) {
+                            print('Vibrator cannot be used');
+                          }
+                          if (status == SUCCESS_MESSAGE) {
+                            currentWaterIntake = currentWaterIntake + 0.25;
+                          } else {
+                            return;
+                          }
                         });
                       },
                       icon: Icon(Icons.add_circle_outlined),
@@ -101,12 +116,27 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                       iconSize: 30,
                     ),
                     IconButton(
-                      onPressed: () {
-                        setState(() {
-                          currentWaterIntake == 0
-                              ? currentWaterIntake = 0
-                              : currentWaterIntake = currentWaterIntake - 0.25;
-                        });
+                      onPressed: () async {
+                        if (currentWaterIntake > 0) {
+                          currentWaterIntake = currentWaterIntake - 0.25;
+
+                          final status = await changeWaterConsumedInDatabase(
+                              currentWaterIntake);
+
+                          setState(() {
+                            try {
+                              Vibration.vibrate(duration: 40);
+                            } catch (e) {
+                              print('Vibrator cannot be used');
+                            }
+                            if (currentWaterIntake == 0) {
+                              currentWaterIntake = 0;
+                            } else {
+                              changeWaterConsumedInDatabase(currentWaterIntake);
+                              if (status == SUCCESS_MESSAGE) {}
+                            }
+                          });
+                        }
                       },
                       icon: Icon(Icons.remove_circle_outlined),
                       color: Color(0xFF92A3FD),

@@ -1,8 +1,9 @@
-import 'package:fiteness_x/Widgets/profile_page_lists.dart';
-import 'package:fiteness_x/Widgets/profile_page_quick_look.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+
+import '../Widgets/onboardingandloginwidgets/profile_page_lists.dart';
+import '../Widgets/onboardingandloginwidgets/profile_page_quick_look.dart';
 
 class ProfileScreen extends StatelessWidget {
   List<Map<String, dynamic>> accountPageItems = [
