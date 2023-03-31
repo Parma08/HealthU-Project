@@ -100,6 +100,14 @@ Map<String, dynamic> get getUserDetailsInJSON {
     'gender': getGenderEnumToStringConvertor(userDetails.gender),
     'weight': userDetails.weightInKgs,
     'height': userDetails.heightInCM,
+    'waterGoals': {
+      'dateTime': Timestamp.fromDate(userDetails.waterGoalsInLiters.date),
+      'waterGoal': userDetails.waterGoalsInLiters.waterGoalInLiters,
+    },
+    'waterConsumedInADay': {
+      'dateTime': Timestamp.fromDate(userDetails.waterConsumedInADay.date),
+      'waterConsumed': userDetails.waterConsumedInADay.waterConsumedInLiters,
+    }
   };
 }
 
@@ -193,7 +201,7 @@ List<MealModal> get getSelectedMeal {
   return selectedMeals;
 }
 
-void setSelectedWorkout(
+Future setSelectedWorkout(
     {required List selectedExercises,
     required List exerciseDescription,
     required DateTime date,
@@ -201,42 +209,28 @@ void setSelectedWorkout(
     required int notificationId,
     required List videoID,
     required List<int> sets,
-    required List reps}) {
+    required List reps}) async {
   List<SelectedWorkoutModal> selectedWorkoutsForTheDay = [];
 
   for (var i = 0; i < selectedExercises.length; i++) {
-    if (selectedWorkoutsForTheDay.isEmpty) {
-      selectedWorkoutsForTheDay.insert(
-          0,
-          SelectedWorkoutModal(
-              notificationID: notificationId,
-              exerciseName: selectedExercises[i],
-              exerciseDescription: exerciseDescription[i],
-              workoutDate: date,
-              sets: sets[i],
-              reps: reps[i],
-              videoID: videoID[i],
-              totalworkoutDuration: 0,
-              workoutTime: time));
-      continue;
-    }
-    selectedWorkoutsForTheDay.insert(
-        selectedWorkoutsForTheDay.length - 1,
-        SelectedWorkoutModal(
-            notificationID: notificationId,
-            exerciseName: selectedExercises[i],
-            exerciseDescription: exerciseDescription[i],
-            workoutDate: date,
-            totalworkoutDuration: 0,
-            sets: sets[i],
-            reps: reps[i],
-            videoID: videoID[i],
-            workoutTime: time));
+    selectedWorkoutsForTheDay.add(SelectedWorkoutModal(
+        notificationID: notificationId,
+        exerciseName: selectedExercises[i],
+        exerciseDescription: exerciseDescription[i],
+        workoutDate: date,
+        sets: sets[i],
+        reps: reps[i],
+        videoID: videoID[i],
+        totalworkoutDuration: 0,
+        workoutTime: time));
   }
 
   if (selectedWorkouts.isEmpty) {
-    selectedWorkouts.insert(0, selectedWorkoutsForTheDay);
-    return;
+    final status = await addWorkoutsToDatabase(selectedWorkoutsForTheDay);
+    if (status == SUCCESS_MESSAGE) {
+      selectedWorkouts.add(selectedWorkoutsForTheDay);
+    }
+    return status;
   }
 
   for (var i = 0; i < selectedWorkouts.length; i++) {
@@ -244,20 +238,55 @@ void setSelectedWorkout(
       if (selectedWorkouts[i][j].workoutDate.year == date.year &&
           selectedWorkouts[i][j].workoutDate.month == date.month &&
           selectedWorkouts[i][j].workoutDate.day == date.day) {
-        print("ADDED WORKOUTS 1 ${selectedWorkoutsForTheDay}");
+        // var deletionStatus;
         for (var k = 0; k < selectedWorkoutsForTheDay.length; k++) {
-          selectedWorkouts[i].insert(
-              selectedWorkouts[i].length - 1, selectedWorkoutsForTheDay[k]);
+          // deletionStatus = await deleteWorkoutFromDatabase(selectedWorkouts[i]);
+          selectedWorkouts[i].add(selectedWorkoutsForTheDay[k]);
         }
+        final additionStatus = await addWorkoutsToDatabase(selectedWorkouts[i]);
 
-        return;
+        if (additionStatus == SUCCESS_MESSAGE) {
+          return additionStatus;
+        } else {
+          for (var ind = 0; ind < selectedWorkoutsForTheDay.length; ind++) {
+            selectedWorkouts[i].removeLast();
+          }
+          return additionStatus;
+        }
       } else if (i == selectedWorkouts.length - 1) {
-        selectedWorkouts.insert(
-            selectedWorkouts.length - 1, selectedWorkoutsForTheDay);
-        return;
+        selectedWorkouts.add(selectedWorkoutsForTheDay);
+        final status = await addWorkoutsToDatabase(selectedWorkouts[i]);
+        if (status != SUCCESS_MESSAGE) {
+          selectedWorkouts.removeLast();
+        }
+        return status;
       }
     }
   }
+}
+
+List getSelectedWorkoutsInJSON() {
+  List selectedExercisesJSON = [];
+  List selectedExercises = [];
+  for (var i = 0; i < getSelectedWorkout.length; i++) {
+    selectedExercises = [];
+    for (var j = 0; i < getSelectedWorkout[i].length; j++) {
+      selectedExercises.add({
+        'notificationID': getSelectedWorkout[i][j].notificationID,
+        'exerciseName': getSelectedWorkout[i][j].exerciseName,
+        'workoutDate': getSelectedWorkout[i][j].workoutDate,
+        'workoutTime': getSelectedWorkout[i][j].workoutTime,
+        'exerciseDescription': getSelectedWorkout[i][j].exerciseDescription,
+        'reps': getSelectedWorkout[i][j].reps,
+        'sets': getSelectedWorkout[i][j].sets,
+        'videoID': getSelectedWorkout[i][j].videoID,
+        'totalworkoutDuration': getSelectedWorkout[i][j].totalworkoutDuration,
+      });
+    }
+    selectedExercisesJSON.add(selectedExercises);
+  }
+
+  return selectedExercisesJSON;
 }
 
 List<List<SelectedWorkoutModal>> get getSelectedWorkout {

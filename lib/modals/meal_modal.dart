@@ -44,6 +44,20 @@ class MealModal {
   });
 }
 
+class waterConsumedModal {
+  DateTime date;
+  double waterConsumedInLiters;
+
+  waterConsumedModal({required this.date, required this.waterConsumedInLiters});
+}
+
+class WaterGoalsModal {
+  DateTime date;
+  double waterGoalInLiters;
+
+  WaterGoalsModal({required this.date, required this.waterGoalInLiters});
+}
+
 class UserModal {
   String userId;
   String firstName;
@@ -51,7 +65,8 @@ class UserModal {
   DateTime dateOfBirth;
   int weightInKgs;
   int heightInCM;
-  int? waterGoalsInLiters;
+  WaterGoalsModal waterGoalsInLiters;
+  waterConsumedModal waterConsumedInADay;
   MealModal? selectedMeals;
   SelectedWorkoutModal? selectedWorkouts;
   Gender gender;
@@ -71,6 +86,7 @@ class UserModal {
     required this.ibw,
     this.selectedMeals,
     this.selectedWorkouts,
-    this.waterGoalsInLiters,
+    required this.waterGoalsInLiters,
+    required this.waterConsumedInADay,
   });
 }

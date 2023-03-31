@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fiteness_x/Widgets/onboardingandloginwidgets/welcome_screen.dart';
 import 'package:fiteness_x/Widgets/tabs_page.dart';
 import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
@@ -67,6 +68,10 @@ class _CreateAccountState extends State<CreateAccount> {
             routeArgs['dob'], routeArgs['gender']),
         ibw: getCalculatedIdealBodyWeight(
             routeArgs['height'], routeArgs['gender']),
+        waterGoalsInLiters:
+            WaterGoalsModal(date: DateTime.now(), waterGoalInLiters: 2),
+        waterConsumedInADay: waterConsumedModal(
+            date: DateTime.now(), waterConsumedInLiters: 1.5),
       ));
 
       await FirebaseFirestore.instance
@@ -74,7 +79,7 @@ class _CreateAccountState extends State<CreateAccount> {
           .doc(user.user!.uid)
           .set(getUserDetailsInJSON);
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) {
-        return TabsPage();
+        return WelcomeScreen();
       }), (Route<dynamic> route) => false);
     } on FirebaseAuthException catch (e) {
       isLoading = false;

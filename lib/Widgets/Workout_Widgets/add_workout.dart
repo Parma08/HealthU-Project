@@ -55,7 +55,7 @@ class _AddWorkoutState extends State<AddWorkout> {
     setState(() {});
   }
 
-  void addWorkout(BuildContext context) {
+  Future addWorkout(BuildContext context) async {
     int notificationId =
         date.day + date.month + date.year + time.hour + time.minute;
     for (var i = 0; i < getSelectedWorkout.length; i++) {
@@ -86,7 +86,8 @@ class _AddWorkoutState extends State<AddWorkout> {
       });
       return;
     }
-    setSelectedWorkout(
+    showDialogLoader(context);
+    final status = await setSelectedWorkout(
         selectedExercises: widget.selectedWorkout,
         exerciseDescription: widget.exerciseDescription,
         date: date,
@@ -95,6 +96,11 @@ class _AddWorkoutState extends State<AddWorkout> {
         videoID: widget.videoIDs,
         sets: widget.sets,
         reps: widget.reps);
+    Navigator.of(context).pop();
+    if (status != SUCCESS_MESSAGE) {
+      showErrorDialogWithoutRetry(context, status.toString());
+      return;
+    }
     showSuccessDialog(
         context: context, successMessage: 'Workout added Successfully');
     Future.delayed(Duration(seconds: 2), () {

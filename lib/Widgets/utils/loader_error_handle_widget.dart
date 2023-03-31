@@ -1,3 +1,5 @@
+import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:fiteness_x/services/notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -218,18 +220,26 @@ List<DateTime> generateYearCalendar() {
   return dates;
 }
 
-void deleteMeal(
-    {required String mealId,
+Future deleteMeal(
+    {required BuildContext context,
+    required String mealId,
     required MealType mealType,
     required DateTime date,
-    required TimeOfDay time}) {
+    required TimeOfDay time}) async {
   for (var i = 0; i < selectedMeals.length; i++) {
     if (selectedMeals[i].mealId == mealId &&
         selectedMeals[i].mealType == mealType) {
       if (selectedMeals[i].date.year == date.year &&
           selectedMeals[i].date.month == date.month &&
           selectedMeals[i].date.day == date.day) {
-        selectedMeals.removeAt(i);
+        showDialogLoader(context);
+        final status = await deleteMealFromDatabase(selectedMeals[i]);
+        Navigator.of(context).pop();
+        if (status == SUCCESS_MESSAGE) {
+          selectedMeals.removeAt(i);
+        } else {
+          showErrorDialogWithoutRetry(context, status);
+        }
         NotificationService().cancelNotification(
             date.day + date.month + date.year + time.hour + time.minute);
       }
@@ -301,6 +311,7 @@ Future mealDeletionConfirmation(
                       TextButton(
                           onPressed: () {
                             deleteMeal(
+                                context: context,
                                 mealId: mealId,
                                 mealType: mealType,
                                 date: date,
@@ -321,13 +332,32 @@ Future mealDeletionConfirmation(
       });
 }
 
-deleteWorkout(String workoutName, int workoutIndex) {
+Future deleteWorkout(
+    BuildContext context, String workoutName, int workoutIndex) async {
   if (getSelectedWorkout[workoutIndex].length == 1) {
-    NotificationService()
-        .cancelNotification(getSelectedWorkout[workoutIndex][0].notificationID);
+    var status =
+        await deleteWorkoutFromDatabase(getSelectedWorkout[workoutIndex]);
+    if (status == SUCCESS_MESSAGE) {
+      NotificationService().cancelNotification(
+          getSelectedWorkout[workoutIndex][0].notificationID);
+      getSelectedWorkout.remove(workoutIndex);
+    }
+
+    return status;
   }
-  getSelectedWorkout[workoutIndex]
-      .removeWhere((element) => element.exerciseName == workoutName);
+
+  for (var i = 0; i < getSelectedWorkout[workoutIndex].length; i++) {
+    if (getSelectedWorkout[workoutIndex][i].exerciseName == workoutName) {
+      final backUpData = getSelectedWorkout[workoutIndex].removeAt(i);
+
+      final status =
+          await addWorkoutsToDatabase(getSelectedWorkout[workoutIndex]);
+      if (status != SUCCESS_MESSAGE) {
+        getSelectedWorkout[workoutIndex].insert(i, backUpData);
+      }
+      return status;
+    }
+  }
 }
 
 Future workoutDeletionConfirmation(
@@ -390,9 +420,15 @@ Future workoutDeletionConfirmation(
                             style: TextStyle(color: Colors.white),
                           )),
                       TextButton(
-                          onPressed: () {
-                            deleteWorkout(workoutName, workoutIndex);
+                          onPressed: () async {
                             Navigator.of(context).pop();
+                            showDialogLoader(context);
+                            var status = await deleteWorkout(
+                                context, workoutName, workoutIndex);
+                            Navigator.of(context).pop();
+                            if (status != SUCCESS_MESSAGE) {
+                              showErrorDialogWithoutRetry(context, status);
+                            }
                           },
                           child: Text(
                             'Delete',

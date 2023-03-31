@@ -152,7 +152,15 @@ class _AddMealModalState extends State<AddMealModal> {
               selectedMeals[i].date.day == widget.addingDate.day &&
               (getSelectedMeal[i].time.hour == widget.addingTime.hour &&
                   getSelectedMeal[i].time.minute == widget.addingTime.minute)) {
-            selectedMeals.removeAt(i);
+            showDialogLoader(context);
+            final status = await deleteMealFromDatabase(selectedMeals[i]);
+            Navigator.of(context).pop();
+            if (status == SUCCESS_MESSAGE) {
+              selectedMeals.removeAt(i);
+            } else {
+              showErrorDialogWithoutRetry(context, status);
+              return;
+            }
             notificationService.cancelNotification(widget.addingDate.day +
                 widget.addingDate.month +
                 widget.addingDate.year +

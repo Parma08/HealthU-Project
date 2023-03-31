@@ -54,7 +54,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("IDD ${getUserDetails.userId}");
     return Container(
       height: MediaQuery.of(context).size.height -
           MediaQuery.of(context).padding.top,
