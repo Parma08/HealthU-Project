@@ -1,5 +1,7 @@
 import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
+import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,7 +22,14 @@ class _EditWorkoutBottomSheetState extends State<EditWorkoutBottomSheet> {
   bool isCompleted = false;
   bool showCompletedCheckbox = true;
 
-  void editWorkout(int selectedSets, int selectedReps, BuildContext context) {
+  Future editWorkout(
+      int selectedSets, int selectedReps, BuildContext context) async {
+    final int backupSets =
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].sets;
+    final int backupReps =
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].reps;
+    final bool backupIsCompleted =
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].isCompleted;
     if (selectedSets > 0 && selectedReps > 0) {
       getSelectedWorkout[widget.workoutIndex][exerciseIndex].sets =
           selectedSets;
@@ -28,13 +37,20 @@ class _EditWorkoutBottomSheetState extends State<EditWorkoutBottomSheet> {
           selectedReps;
       getSelectedWorkout[widget.workoutIndex][exerciseIndex].isCompleted =
           isCompleted;
-      Future.delayed(Duration(seconds: 2), () {
-        Navigator.of(context).pop();
-        Navigator.of(context).pop();
-      });
 
-      showSuccessDialog(
-          context: context, successMessage: 'Workouts edited Succesfully');
+      final status =
+          await addWorkoutsToDatabase(getSelectedWorkout[widget.workoutIndex]);
+      if (status != SUCCESS_MESSAGE) {
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].sets =
+            backupSets;
+
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].reps =
+            backupReps;
+        getSelectedWorkout[widget.workoutIndex][exerciseIndex].isCompleted =
+            backupIsCompleted;
+      }
+
+      return status;
     } else {}
   }
 
@@ -140,11 +156,24 @@ class _EditWorkoutBottomSheetState extends State<EditWorkoutBottomSheet> {
                 )
               : SizedBox(),
           InkWell(
-            onTap: () {
+            onTap: () async {
               if (setsController.text.isNotEmpty &&
                   repsController.text.isNotEmpty) {
-                editWorkout(int.parse(setsController.text),
+                showDialogLoader(context);
+                final status = await editWorkout(int.parse(setsController.text),
                     int.parse(repsController.text), context);
+                Navigator.of(context).pop();
+                if (status == SUCCESS_MESSAGE) {
+                  showSuccessDialog(
+                      context: context,
+                      successMessage: 'Workouts edited Succesfully');
+                  Future.delayed(Duration(seconds: 2), () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  });
+                } else {
+                  showErrorDialogWithoutRetry(context, status);
+                }
               }
             },
             child: Container(

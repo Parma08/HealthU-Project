@@ -16,8 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Widget bmrAndIbwBuilder(
-      BuildContext context, String title, int value, String illustrationLink) {
+  Widget bmrAndIbwBuilder(BuildContext context, String title, double value,
+      String illustrationLink) {
     return Container(
       height: 190,
       padding: EdgeInsets.all(10),
@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Text(
-                      'Parmanand Singh',
+                      '${userDetails.firstName}',
                       style: TextStyle(
                           fontSize: 18,
                           color: Color(0xFF1D1617),
@@ -123,9 +123,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    bmrAndIbwBuilder(context, 'Basal Metabolic Rate (BMR)', 22,
-                        'assets/images/bmr_graph.svg'),
-                    bmrAndIbwBuilder(context, 'Ideal Body Weight (IBW)', 64,
+                    bmrAndIbwBuilder(context, 'Basal Metabolic Rate (BMR)',
+                        userDetails.bmr, 'assets/images/bmr_graph.svg'),
+                    bmrAndIbwBuilder(
+                        context,
+                        'Ideal Body Weight (IBW)',
+                        userDetails.ibw,
                         'assets/images/ideal_weight_pattern.svg'),
                   ],
                 ),

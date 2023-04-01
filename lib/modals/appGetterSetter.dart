@@ -10,10 +10,11 @@ import 'package:vibration/vibration.dart';
 
 import 'meal_modal.dart';
 
-late List<MealModal> selectedMeals = [];
-late List<List<SelectedWorkoutModal>> selectedWorkouts = [];
-late List<ImageModal> clickedImages = [];
-late int waterGoal = 4;
+List<MealModal> selectedMeals = [];
+List<List<SelectedWorkoutModal>> selectedWorkouts = [];
+List<ImageModal> clickedImages = [];
+int waterGoal = 3;
+double waterConsumedInADay = 1.5;
 late UserModal userDetails;
 
 void setUserDetails(UserModal details) {
@@ -34,6 +35,19 @@ String getGenderEnumToStringConvertor(Gender gender) {
       return 'other';
     default:
       return 'unknown';
+  }
+}
+
+Gender getGenderStringToEnumConvertor(String gender) {
+  switch (gender) {
+    case 'male':
+      return Gender.male;
+    case 'female':
+      return Gender.female;
+    case 'other':
+      return Gender.others;
+    default:
+      return Gender.male;
   }
 }
 
@@ -74,6 +88,43 @@ getMealCategoryEnumToStringConvertor(MealCategory mealCategory) {
   }
 }
 
+MealCategory getMealCategoryStringToEnumConvertor(String mealCategory) {
+  switch (mealCategory) {
+    case 'Beef':
+      return MealCategory.Beef;
+
+    case 'Breakfast':
+      return MealCategory.Breakfast;
+
+    case 'Chicken':
+      return MealCategory.Chicken;
+    case 'Dessert':
+      return MealCategory.Dessert;
+    case 'Goat':
+      return MealCategory.Goat;
+    case 'Lamb':
+      return MealCategory.Lamb;
+    case 'Miscellaneous':
+      return MealCategory.Miscellaneous;
+    case 'Pasta':
+      return MealCategory.Pasta;
+    case 'Pork':
+      return MealCategory.Pork;
+    case 'Seafood':
+      return MealCategory.Seafood;
+    case 'Side':
+      return MealCategory.Side;
+    case 'Starter':
+      return MealCategory.Starter;
+    case 'Vegan':
+      return MealCategory.Vegan;
+    case 'Vegetarian':
+      return MealCategory.Vegetarian;
+    default:
+      return MealCategory.Vegetarian;
+  }
+}
+
 String getMealTypeEnumToStringConvertor(MealType mealtype) {
   switch (mealtype) {
     case MealType.Breakfast:
@@ -92,6 +143,24 @@ String getMealTypeEnumToStringConvertor(MealType mealtype) {
   }
 }
 
+MealType getMealTypeStringToEnumConvertor(String mealtype) {
+  switch (mealtype.toLowerCase()) {
+    case 'breakfast':
+      return MealType.Breakfast;
+
+    case 'dinner':
+      return MealType.Dinner;
+
+    case 'lunch':
+      return MealType.Lunch;
+    case 'snacks':
+      return MealType.Snack;
+
+    default:
+      return MealType.Lunch;
+  }
+}
+
 Map<String, dynamic> get getUserDetailsInJSON {
   return {
     'firstName': userDetails.firstName,
@@ -100,10 +169,7 @@ Map<String, dynamic> get getUserDetailsInJSON {
     'gender': getGenderEnumToStringConvertor(userDetails.gender),
     'weight': userDetails.weightInKgs,
     'height': userDetails.heightInCM,
-    'waterGoals': {
-      'dateTime': Timestamp.fromDate(userDetails.waterGoalsInLiters.date),
-      'waterGoal': userDetails.waterGoalsInLiters.waterGoalInLiters,
-    },
+    'waterGoals': getWaterGoal,
     'waterConsumedInADay': {
       'dateTime': Timestamp.fromDate(userDetails.waterConsumedInADay.date),
       'waterConsumed': userDetails.waterConsumedInADay.waterConsumedInLiters,
@@ -118,6 +184,23 @@ Future setWaterGoals(int goal) async {
     waterGoal = goal;
   }
   return status;
+}
+
+int get getWaterGoal {
+  return waterGoal;
+}
+
+Future setWaterConsumed(double waterConsumed) async {
+  final status = await changeWaterConsumedInDatabase(waterConsumed);
+
+  if (status == SUCCESS_MESSAGE) {
+    waterConsumedInADay = waterConsumed;
+  }
+  return status;
+}
+
+double get getWaterConsumed {
+  return waterConsumedInADay;
 }
 
 double getCalculatedBMI(int weightInKG, int heightInCM) {
@@ -145,9 +228,18 @@ double getCalculatedBMR(
 
 double getCalculatedIdealBodyWeight(int heightInCM, Gender gender) {
   String gen = getGenderEnumToStringConvertor(gender);
-  double ibwForMan = 50 + 2.3 * ((heightInCM - 152.4) / 2.54);
-  double ibwForWomen = 45.5 + 2.3 * ((heightInCM - 152.4) / 2.54);
-  ;
+  double heightInInches = heightInCM * 0.3937;
+  double additionalHeight = heightInInches - 60;
+  print('IIDW DATA ${heightInCM} ${gen}');
+  if (heightInCM <= 152.4 && gen == 'male') {
+    return 50;
+  } else if (heightInCM <= 152.4 && gen == 'female') {
+    return 45.5;
+  } else if (heightInCM <= 152.4 && gen == 'others') {
+    return 47.8;
+  }
+  double ibwForMan = 50 + (2.3 * additionalHeight);
+  double ibwForWomen = 45.5 + (2.3 * additionalHeight);
   double ibwForOthers = (ibwForMan + ibwForWomen) / 2;
   if (gen == 'male') {
     return double.parse(ibwForMan.toStringAsFixed(1));
@@ -156,10 +248,6 @@ double getCalculatedIdealBodyWeight(int heightInCM, Gender gender) {
     return double.parse(ibwForWomen.toStringAsFixed(1));
   }
   return double.parse(ibwForOthers.toStringAsFixed(1));
-}
-
-int get getWaterGoal {
-  return waterGoal;
 }
 
 Future setSelectedMeal(MealModal meal) async {
@@ -293,10 +381,18 @@ List<List<SelectedWorkoutModal>> get getSelectedWorkout {
   return selectedWorkouts;
 }
 
-void setWorkoutTiming(int workoutIndex, int duration) {
+Future setWorkoutTiming(int workoutIndex, int duration) async {
+  int backupDuration = selectedWorkouts[workoutIndex][0].totalworkoutDuration;
   for (var i = 0; i < selectedWorkouts[workoutIndex].length; i++) {
     selectedWorkouts[workoutIndex][i].totalworkoutDuration = duration;
   }
+  final status = await addWorkoutsToDatabase(selectedWorkouts[workoutIndex]);
+  if (status != SUCCESS_MESSAGE) {
+    for (var i = 0; i < selectedWorkouts[workoutIndex].length; i++) {
+      selectedWorkouts[workoutIndex][i].totalworkoutDuration = backupDuration;
+    }
+  }
+  return status;
 }
 
 void setImagePaths(ImageModal filepath) {

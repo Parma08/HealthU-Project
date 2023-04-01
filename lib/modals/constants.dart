@@ -57,6 +57,7 @@ class WorkoutCategoryByType {
 }
 
 const String SUCCESS_MESSAGE = 'yayyy';
+const String INTERNET_DOWN_MESSAGE = 'Please Check Your Internet Connection';
 
 List<WorkoutCategoryByType> WORKOUT_CATEGORY_BY_TYPE = [
   WorkoutCategoryByType(

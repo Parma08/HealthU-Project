@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 
 import '../Widgets/onboardingandloginwidgets/input_widget.dart';
 import '../Widgets/onboardingandloginwidgets/social_login_buttons.dart';
+import '../modals/firebaseservice.dart';
 import '../themes.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,7 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = TextEditingController();
 
   TextEditingController password = TextEditingController();
-
   bool isLoading = false;
 
   Future login(BuildContext context) async {
@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: email.text.trim(),
         password: password.text.trim(),
       );
-
+      await initializeDatabaseRelatedThingsForApp();
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (_) {
         return WelcomeScreen();
       }), (route) => false);

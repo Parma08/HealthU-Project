@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:flutter/material.dart';
 
 class HomePageIndicator extends StatelessWidget {
@@ -9,7 +10,7 @@ class HomePageIndicator extends StatelessWidget {
   late Color indicatorBGColor;
   late String category;
   late double degreeRotation;
-  double bmi = 32;
+  double bmi = userDetails.bmi;
 
   Widget indicatorBuilder(double value, Color color) {
     return Center(

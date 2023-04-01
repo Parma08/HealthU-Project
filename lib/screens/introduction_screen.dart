@@ -2,12 +2,29 @@ import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+class IntroductionScreenModal {
+  double progressPercent;
+  String iconLink;
+  String titleText;
+  String bodyText;
+  Function onTapMethod;
+
+  IntroductionScreenModal(
+      {required this.progressPercent,
+      required this.iconLink,
+      required this.titleText,
+      required this.bodyText,
+      required this.onTapMethod});
+}
+
 class IntroductionScreen extends StatelessWidget {
+  IntroductionScreenModal screenInfo;
+
+  IntroductionScreen({required this.screenInfo});
+
   static const routeName = '/introductionscreen';
   @override
   Widget build(BuildContext context) {
-    final routeArgs =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
     return Scaffold(
         body: Container(
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
@@ -19,7 +36,7 @@ class IntroductionScreen extends StatelessWidget {
           Container(
             width: double.infinity,
             child: SvgPicture.asset(
-              routeArgs['icon'],
+              screenInfo.iconLink,
               fit: BoxFit.cover,
               alignment: Alignment.bottomCenter,
             ),
@@ -31,7 +48,7 @@ class IntroductionScreen extends StatelessWidget {
             child: Container(
               width: 200,
               child: Text(
-                routeArgs['titleText'],
+                screenInfo.titleText,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
               ),
             ),
@@ -41,7 +58,7 @@ class IntroductionScreen extends StatelessWidget {
             alignment: Alignment.topLeft,
             margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: Text(
-              routeArgs['bodyText'],
+              screenInfo.bodyText,
               style: TextStyle(
                 fontSize: 14,
               ),
@@ -60,12 +77,12 @@ class IntroductionScreen extends StatelessWidget {
                   child: CircularProgressIndicator(
                     color: Color(0xFF92A3FD),
                     strokeWidth: 2,
-                    value: routeArgs['progressPercent'],
+                    value: screenInfo.progressPercent,
                   ),
                 ),
                 InkWell(
                     onTap: () {
-                      routeArgs['onTapMethod'](context);
+                      screenInfo.onTapMethod(context);
                     },
                     child: Container(
                       child: Container(

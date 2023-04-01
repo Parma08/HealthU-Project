@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:fiteness_x/Widgets/Workout_Widgets/workout_info_screen.dart';
 import 'package:fiteness_x/Widgets/Workout_Widgets/workout_timer.dart';
 import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -42,10 +43,15 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
     }
   }
 
-  void markAsCompleted(String exerciseName) {
+  Future markAsCompleted(String exerciseName) async {
     for (var i = 0; i < getSelectedWorkout[workoutIndex].length; i++) {
       if (getSelectedWorkout[workoutIndex][i].exerciseName == exerciseName) {
         getSelectedWorkout[workoutIndex][i].isCompleted = true;
+        final status =
+            await addWorkoutsToDatabase(getSelectedWorkout[workoutIndex]);
+        if (status != SUCCESS_MESSAGE) {
+          getSelectedWorkout[workoutIndex][i].isCompleted = false;
+        }
         NotificationService().cancelNotification(
             getSelectedWorkout[workoutIndex][i].notificationID);
       }

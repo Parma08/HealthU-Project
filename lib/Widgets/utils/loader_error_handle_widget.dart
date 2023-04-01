@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fiteness_x/modals/constants.dart';
 import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:fiteness_x/services/notification_service.dart';
@@ -442,4 +443,13 @@ Future workoutDeletionConfirmation(
           ),
         );
       });
+}
+
+Future<bool> isInternetCOnnectionDown() async {
+  final connectivityResult = await (Connectivity().checkConnectivity());
+  if (connectivityResult == ConnectivityResult.mobile ||
+      connectivityResult == ConnectivityResult.wifi) {
+    return false;
+  }
+  return true;
 }

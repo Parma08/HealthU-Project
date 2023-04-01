@@ -311,9 +311,9 @@ class _CompleteYourProfileState extends State<CompleteYourProfile> {
                               onTap: () {
                                 openBottomModal(
                                     context: context,
-                                    initialValue: 100,
-                                    minimumValue: 50,
-                                    maximumValue: 280,
+                                    initialValue: 180,
+                                    minimumValue: 160,
+                                    maximumValue: 243,
                                     type: 'height',
                                     heading: 'Your Height',
                                     units: 'Centimeters');

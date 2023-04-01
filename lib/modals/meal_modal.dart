@@ -51,13 +51,6 @@ class waterConsumedModal {
   waterConsumedModal({required this.date, required this.waterConsumedInLiters});
 }
 
-class WaterGoalsModal {
-  DateTime date;
-  double waterGoalInLiters;
-
-  WaterGoalsModal({required this.date, required this.waterGoalInLiters});
-}
-
 class UserModal {
   String userId;
   String firstName;
@@ -65,7 +58,7 @@ class UserModal {
   DateTime dateOfBirth;
   int weightInKgs;
   int heightInCM;
-  WaterGoalsModal waterGoalsInLiters;
+  int waterGoalsInLiters;
   waterConsumedModal waterConsumedInADay;
   MealModal? selectedMeals;
   SelectedWorkoutModal? selectedWorkouts;

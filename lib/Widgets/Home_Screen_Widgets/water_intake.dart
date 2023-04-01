@@ -18,8 +18,8 @@ class WaterIntakeWidget extends StatefulWidget {
 }
 
 class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
-  int waterGoal = 4;
-  double currentWaterIntake = 3.0;
+  int waterGoal = 1;
+  double currentWaterIntake = getWaterConsumed;
   @override
   Widget build(BuildContext context) {
     waterGoal = getWaterGoal;
@@ -95,8 +95,8 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                     ),
                     IconButton(
                       onPressed: () async {
-                        final status = await changeWaterConsumedInDatabase(
-                            currentWaterIntake);
+                        final status =
+                            await setWaterConsumed(currentWaterIntake);
 
                         setState(() {
                           try {
@@ -120,8 +120,8 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                         if (currentWaterIntake > 0) {
                           currentWaterIntake = currentWaterIntake - 0.25;
 
-                          final status = await changeWaterConsumedInDatabase(
-                              currentWaterIntake);
+                          final status =
+                              await setWaterConsumed(currentWaterIntake);
 
                           setState(() {
                             try {
@@ -132,7 +132,7 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                             if (currentWaterIntake == 0) {
                               currentWaterIntake = 0;
                             } else {
-                              changeWaterConsumedInDatabase(currentWaterIntake);
+                              setWaterConsumed(currentWaterIntake);
                               if (status == SUCCESS_MESSAGE) {}
                             }
                           });

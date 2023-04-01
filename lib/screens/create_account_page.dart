@@ -30,7 +30,6 @@ class _CreateAccountState extends State<CreateAccount> {
 
   late TextEditingController password = TextEditingController();
   late TextEditingController confirmpassword = TextEditingController();
-
   bool isLoading = false;
 
   Future signUp(BuildContext context) async {
@@ -68,8 +67,7 @@ class _CreateAccountState extends State<CreateAccount> {
             routeArgs['dob'], routeArgs['gender']),
         ibw: getCalculatedIdealBodyWeight(
             routeArgs['height'], routeArgs['gender']),
-        waterGoalsInLiters:
-            WaterGoalsModal(date: DateTime.now(), waterGoalInLiters: 2),
+        waterGoalsInLiters: 2,
         waterConsumedInADay: waterConsumedModal(
             date: DateTime.now(), waterConsumedInLiters: 1.5),
       ));

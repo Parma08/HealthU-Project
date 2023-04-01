@@ -1,4 +1,7 @@
 import 'package:fiteness_x/TabScreens/camera.dart';
+import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
+import 'package:fiteness_x/modals/constants.dart';
+import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fiteness_x/TabScreens/meals.dart';
 import 'package:fiteness_x/TabScreens/profile.dart';
@@ -17,6 +20,12 @@ class TabsPage extends StatefulWidget {
 }
 
 class TabsPageState extends State<TabsPage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   final List<Map<String, dynamic>> pages = [
     {'screenWidget': HomeScreen(), 'tabBarTitle': ''},
     {'screenWidget': MealsScreen(), 'tabBarTitle': 'Meals'},

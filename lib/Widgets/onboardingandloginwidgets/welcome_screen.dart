@@ -1,4 +1,5 @@
 import 'package:fiteness_x/Widgets/tabs_page.dart';
+import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -39,7 +40,7 @@ class WelcomeScreen extends StatelessWidget {
                       children: [
                         Container(
                           child: Text(
-                            'Welcome, Parmanand',
+                            '${userDetails.firstName}',
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Color(0xFF1D1617)),

@@ -3,8 +3,10 @@ import 'package:fiteness_x/Widgets/Home_Screen_Widgets/reset_password_screen.dar
 import 'package:fiteness_x/Widgets/onboardingandloginwidgets/complete_your_profile.dart';
 import 'package:fiteness_x/Widgets/onboardingandloginwidgets/welcome_screen.dart';
 import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
+import 'package:fiteness_x/modals/constants.dart';
 
 import 'Widgets/meal_screen_widgets/daily_meal_schedule_widgets/daily_meal_schedule.dart';
+import 'modals/firebaseservice.dart';
 import 'screens/get_started_screen.dart';
 import 'screens/introduction_screen.dart';
 import 'package:fiteness_x/themes.dart';
@@ -17,6 +19,7 @@ import 'screens/login_screen.dart';
 import 'Widgets/tabs_page.dart';
 
 Future main() async {
+  bool isErrorInitilizing = false;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SystemChrome.setPreferredOrientations([
@@ -26,7 +29,14 @@ Future main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color(0xFF92A3FD),
   ));
-
+  try {
+    if (FirebaseAuth.instance.currentUser?.uid != null) {
+      final status = await initializeDatabaseRelatedThingsForApp();
+      if (status != SUCCESS_MESSAGE) {
+        isErrorInitilizing = true;
+      }
+    }
+  } on FirebaseException catch (e) {}
   runApp(MyApp());
 }
 
@@ -55,7 +65,6 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       routes: {
         GetStartedScreen.routeName: (ctx) => GetStartedScreen(),
-        IntroductionScreen.routeName: (ctx) => IntroductionScreen(),
         CreateAccount.routeName: (ctx) => CreateAccount(),
         LoginScreen.routeName: (ctx) => LoginScreen(),
         TabsPage.routeName: (ctx) => TabsPage(),

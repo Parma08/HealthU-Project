@@ -1,3 +1,4 @@
+import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -67,7 +68,7 @@ class ProfilePageQuickLook extends StatelessWidget {
               ),
             ]),
             title: Text(
-              'Parmanand Singh',
+              '${userDetails.firstName}',
               style: TextStyle(fontSize: 14),
             ),
             subtitle: Text(

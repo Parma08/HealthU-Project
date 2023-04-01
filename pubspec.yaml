@@ -50,7 +50,12 @@ dependencies:
   firebase_auth: ^4.2.2
   carousel_slider: ^4.2.1
   vibration: ^1.7.6
+  connectivity_plus: ^3.0.3
+  flutter_native_splash: ^2.2.19
 
+flutter_native_splash:
+  color: "#ffffff" 
+  image: assets/images/splash_screen_logo.png
 dev_dependencies:
   flutter_test:
     sdk: flutter
