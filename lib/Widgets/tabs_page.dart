@@ -45,7 +45,32 @@ class TabsPageState extends State<TabsPage> {
               elevation: 0,
               title: Text(pages[pageIndex]['tabBarTitle'],
                   style: Theme.of(context).textTheme.titleSmall),
-            )
+              actions: [
+                  if (pageIndex == 3)
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (_) {
+                              return Dialog(
+                                child: Container(
+                                  padding: EdgeInsets.all(10),
+                                  color: Colors.white,
+                                  child: Text(
+                                    'We do not store your images in our server.\nImages are stored in your device.',
+                                    style: TextStyle(
+                                        color: Colors.red[400], fontSize: 16),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.info_outlined,
+                          color: Colors.black,
+                        ))
+                ])
           : null,
       bottomNavigationBar: Container(
           height: 60,

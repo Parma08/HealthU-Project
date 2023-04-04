@@ -210,8 +210,7 @@ double getCalculatedBMI(int weightInKG, int heightInCM) {
 
 double getCalculatedBMR(
     int weightInKG, int heightInCM, DateTime dateOfBirth, Gender gender) {
-  Duration duration = DateTime.now().difference(dateOfBirth);
-  int age = (duration.inDays / 365).floor();
+  int age = getuserAge(dateOfBirth);
   String gen = getGenderEnumToStringConvertor(gender);
   double bmrForMan = (10 * weightInKG) + (6.25 * heightInCM) - (5 * age) + 5;
   double bmrForWomen =
@@ -276,7 +275,7 @@ List getSelectedMealsInJSON() {
       'mealType': getMealTypeEnumToStringConvertor(getSelectedMeal[i].mealType),
       'imageLink': getSelectedMeal[i].imageLink,
       'dateTime': timestamp,
-      'notfications': getSelectedMeal[i].notifications,
+      'notificationsID': getSelectedMeal[i].notificationsId,
       'mealCategory':
           getMealCategoryEnumToStringConvertor(getSelectedMeal[i].mealCategory),
     });
@@ -297,7 +296,8 @@ Future setSelectedWorkout(
     required int notificationId,
     required List videoID,
     required List<int> sets,
-    required List reps}) async {
+    required List reps,
+    required List<bool> isCompleted}) async {
   List<SelectedWorkoutModal> selectedWorkoutsForTheDay = [];
 
   for (var i = 0; i < selectedExercises.length; i++) {
@@ -310,7 +310,8 @@ Future setSelectedWorkout(
         reps: reps[i],
         videoID: videoID[i],
         totalworkoutDuration: 0,
-        workoutTime: time));
+        workoutTime: time,
+        isCompleted: isCompleted[i]));
   }
 
   if (selectedWorkouts.isEmpty) {
@@ -369,6 +370,7 @@ List getSelectedWorkoutsInJSON() {
         'sets': getSelectedWorkout[i][j].sets,
         'videoID': getSelectedWorkout[i][j].videoID,
         'totalworkoutDuration': getSelectedWorkout[i][j].totalworkoutDuration,
+        'isCompleted': getSelectedWorkout[i][j].isCompleted,
       });
     }
     selectedExercisesJSON.add(selectedExercises);
@@ -396,11 +398,7 @@ Future setWorkoutTiming(int workoutIndex, int duration) async {
 }
 
 void setImagePaths(ImageModal filepath) {
-  if (clickedImages.isEmpty) {
-    clickedImages.insert(0, filepath);
-    return;
-  }
-  clickedImages.insert(clickedImages.length - 1, filepath);
+  clickedImages.add(filepath);
 }
 
 List<ImageModal> get getImagePaths {
@@ -414,4 +412,10 @@ Future<bool> canVibrationWork() async {
     return true;
   }
   return false;
+}
+
+int getuserAge(DateTime dateOfBirth) {
+  Duration duration = DateTime.now().difference(dateOfBirth);
+  int age = (duration.inDays / 365).floor();
+  return age;
 }

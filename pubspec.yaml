@@ -52,6 +52,7 @@ dependencies:
   vibration: ^1.7.6
   connectivity_plus: ^3.0.3
   flutter_native_splash: ^2.2.19
+  just_audio: ^0.9.32
 
 flutter_native_splash:
   color: "#ffffff" 

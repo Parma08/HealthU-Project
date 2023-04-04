@@ -68,47 +68,51 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       body: Stack(
         children: [
           if (isLoading) Loader(),
-          Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: 80),
-                width: MediaQuery.of(context).size.width,
-                height: 100,
-                alignment: Alignment.center,
-                child: InputWidget(
-                    labelName: 'Email',
-                    textController: email,
-                    iconName: Icons.email_outlined),
-              ),
-              GestureDetector(
-                  onTap: () {
-                    resetPassword(context);
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width * 0.7,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    margin: const EdgeInsets.only(top: 50, left: 10, right: 10),
-                    decoration: BoxDecoration(
-                        gradient: primaryLinearGradient,
-                        borderRadius: BorderRadius.circular(100)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            'Reset Password ',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
+          IgnorePointer(
+            ignoring: isLoading,
+            child: Column(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 80),
+                  width: MediaQuery.of(context).size.width,
+                  height: 100,
+                  alignment: Alignment.center,
+                  child: InputWidget(
+                      labelName: 'Email',
+                      textController: email,
+                      iconName: Icons.email_outlined),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      resetPassword(context);
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      margin:
+                          const EdgeInsets.only(top: 50, left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          gradient: primaryLinearGradient,
+                          borderRadius: BorderRadius.circular(100)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              'Reset Password ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
                             ),
-                          ),
-                          Icon(
-                            Icons.lock_reset,
-                            color: Colors.white,
-                          ),
-                        ]),
-                  )),
-            ],
+                            Icon(
+                              Icons.lock_reset,
+                              color: Colors.white,
+                            ),
+                          ]),
+                    )),
+              ],
+            ),
           ),
         ],
       ),

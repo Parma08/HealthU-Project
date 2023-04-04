@@ -43,10 +43,7 @@ class _PastWorkoutsListState extends State<PastWorkoutsList> {
         return Center(
           child: Text(
             'No Workouts to show',
-            style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: Color(0XFFC58BF2)),
+            style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
         );
       } else

@@ -178,7 +178,8 @@ class _AddMealModalState extends State<AddMealModal> {
         mealType: mealTypeStringToEnumConvertor(mealDropDownValue),
         time: time,
         date: date,
-        notifications: true,
+        notificationsId:
+            (date.day + date.month + date.year + time.hour + time.minute),
         mealCategory: getMealCategoryEnumValue(widget.mealCategory)));
     Navigator.of(ctx).pop();
     if (status != SUCCESS_MESSAGE) {
@@ -186,11 +187,17 @@ class _AddMealModalState extends State<AddMealModal> {
       return;
     }
 
-    notificationService.sendNotification(
-        id: (date.day + date.month + date.year + time.hour + time.minute),
-        date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
-        title: 'Meal Time!',
-        body: 'Time to make ${widget.mealName}');
+    print('NOTIFICATION SHOULD BE SENT ${date.isAfter(DateTime.now())}');
+    if (DateTime(date.year, date.month, date.year, time.hour, time.minute)
+        .isAfter(DateTime.now())) {
+      print('NOTIFICATION SHOULD BE SENT');
+      notificationService.sendNotification(
+          id: (date.day + date.month + date.year + time.hour + time.minute),
+          date:
+              DateTime(date.year, date.month, date.day, time.hour, time.minute),
+          title: 'Meal Time!',
+          body: 'Time to make ${widget.mealName}');
+    }
     Future.delayed(Duration(seconds: 1), () {
       Navigator.of(ctx).pop(); //For dialog
       Navigator.of(ctx).pop(); //For bottom modal

@@ -1,15 +1,16 @@
+import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   final AndroidInitializationSettings initializationSettingsAndroid =
-      AndroidInitializationSettings('@mipmap/ic_launcher');
+      AndroidInitializationSettings('@drawable/ic_notification_logo');
 
   final DarwinInitializationSettings darwinInitializationSettings =
       DarwinInitializationSettings();
 
-  void initializeNotifications() async {
+  Future initializeNotifications() async {
     requestPermissions();
     InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid,
@@ -36,7 +37,7 @@ class NotificationService {
   }
 
   void cancelNotification(int id) async {
-    flutterLocalNotificationsPlugin.cancel(id);
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   void requestPermissions() async {
@@ -52,5 +53,46 @@ class NotificationService {
           badge: true,
           sound: true,
         );
+  }
+
+  void cancelAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  void rescheduleAllTheNotifications() async {
+    await initializeNotifications();
+    for (var i = 0; i < getSelectedMeal.length; i++) {
+      DateTime mealDateTime = DateTime(
+          getSelectedMeal[i].date.year,
+          getSelectedMeal[i].date.month,
+          getSelectedMeal[i].date.day,
+          getSelectedMeal[i].time.hour,
+          getSelectedMeal[i].time.minute);
+      if (mealDateTime.isAfter(DateTime.now())) {
+        sendNotification(
+            id: getSelectedMeal[i].notificationsId,
+            title: 'Meal Time!',
+            body: 'Time to make ${getSelectedMeal[i].mealName}',
+            date: mealDateTime);
+      }
+    }
+
+    for (var i = 0; i < getSelectedWorkout.length; i++) {
+      for (var j = 0; j < getSelectedWorkout[i].length; j++) {
+        DateTime workoutDateTime = DateTime(
+            getSelectedWorkout[i][j].workoutDate.year,
+            getSelectedWorkout[i][j].workoutDate.month,
+            getSelectedWorkout[i][j].workoutDate.day,
+            getSelectedWorkout[i][j].workoutTime.hour,
+            getSelectedWorkout[i][j].workoutTime.minute);
+        if (workoutDateTime.isAfter(DateTime.now())) {
+          sendNotification(
+              id: getSelectedWorkout[i][j].notificationID,
+              title: 'Workout Time',
+              body: 'Time to start the workout and feel better!',
+              date: workoutDateTime);
+        }
+      }
+    }
   }
 }

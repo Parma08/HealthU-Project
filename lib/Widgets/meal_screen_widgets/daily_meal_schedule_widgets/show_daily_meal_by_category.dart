@@ -237,6 +237,7 @@ class ShowDailyMealsByCategoryState extends State<ShowDailyMealsByCategory> {
             child: Text(
               'NO MEALS WERE ADDED FOR THIS DAY',
               textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.grey, fontSize: 14),
             ),
           )
         : !isMealAdded
@@ -247,6 +248,7 @@ class ShowDailyMealsByCategoryState extends State<ShowDailyMealsByCategory> {
                 child: Text(
                   'NO MEALS ADDED FOR THIS DAY \n FIND SOMETHING TO EAT!',
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
                 ),
               )
             : Column(

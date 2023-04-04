@@ -86,6 +86,10 @@ class _AddWorkoutState extends State<AddWorkout> {
       });
       return;
     }
+    List<bool> isCompleted = [];
+    for (var i = 0; i < widget.selectedWorkout.length; i++) {
+      isCompleted.add(false);
+    }
     showDialogLoader(context);
     final status = await setSelectedWorkout(
         selectedExercises: widget.selectedWorkout,
@@ -95,7 +99,8 @@ class _AddWorkoutState extends State<AddWorkout> {
         notificationId: notificationId,
         videoID: widget.videoIDs,
         sets: widget.sets,
-        reps: widget.reps);
+        reps: widget.reps,
+        isCompleted: isCompleted);
     Navigator.of(context).pop();
     if (status != SUCCESS_MESSAGE) {
       showErrorDialogWithoutRetry(context, status.toString());
@@ -108,12 +113,15 @@ class _AddWorkoutState extends State<AddWorkout> {
       Navigator.of(context).pop();
     });
     notificationService.initializeNotifications();
-    notificationService.sendNotification(
-        id: notificationId,
-        title: "Workout Time",
-        body: "Time to start the workout and feel better!",
-        date:
-            DateTime(date.year, date.month, date.day, time.hour, time.minute));
+    if (DateTime(date.year, date.month, date.year, time.hour, time.minute)
+        .isAfter(DateTime.now())) {
+      notificationService.sendNotification(
+          id: notificationId,
+          title: "Workout Time",
+          body: "Time to start the workout and feel better!",
+          date: DateTime(
+              date.year, date.month, date.day, time.hour, time.minute));
+    }
   }
 
   @override

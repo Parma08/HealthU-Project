@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fiteness_x/Widgets/utils/loader_error_handle_widget.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/material.dart';
@@ -75,16 +77,27 @@ class ProfilePageQuickLook extends StatelessWidget {
               'Loose a fat program',
               style: TextStyle(fontSize: 12),
             ),
-            trailing: Container(
-              width: 80,
-              height: 30,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  gradient: primaryLinearGradient,
-                  borderRadius: BorderRadius.circular(30)),
-              child: const Text(
-                'Edit',
-                style: TextStyle(color: Colors.white, fontSize: 12),
+            trailing: GestureDetector(
+              onTap: () async {
+                showDialogLoader(context);
+                try {
+                  await FirebaseAuth.instance.signOut();
+                  Navigator.of(context).pop();
+                } on FirebaseAuthException catch (e) {
+                  showErrorDialogWithoutRetry(context, e.message.toString());
+                }
+              },
+              child: Container(
+                width: 80,
+                height: 30,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    gradient: primaryLinearGradient,
+                    borderRadius: BorderRadius.circular(30)),
+                child: const Text(
+                  'Logout',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
               ),
             ),
           ),
@@ -92,9 +105,10 @@ class ProfilePageQuickLook extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            userDataTileBuilder('180cm', 'Height'),
-            userDataTileBuilder('65kg', 'Weight'),
-            userDataTileBuilder('22yo', 'Age'),
+            userDataTileBuilder('${getUserDetails.heightInCM}cm', 'Height'),
+            userDataTileBuilder('${getUserDetails.weightInKgs}Kg', 'Weight'),
+            userDataTileBuilder(
+                '${getuserAge(userDetails.dateOfBirth)}yo', 'Age'),
           ],
         )
       ],

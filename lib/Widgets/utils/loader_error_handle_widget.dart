@@ -341,7 +341,12 @@ Future deleteWorkout(
     if (status == SUCCESS_MESSAGE) {
       NotificationService().cancelNotification(
           getSelectedWorkout[workoutIndex][0].notificationID);
-      getSelectedWorkout.remove(workoutIndex);
+      // print("DELETED WORKOUT ${getSelectedWorkout[workoutIndex][]}")
+      print("DELETED WORKOUT $getSelectedWorkout");
+
+      var i = getSelectedWorkout.removeAt(workoutIndex);
+      print("DELETED WORKOUT $i");
+      print("DELETED WORKOUT $getSelectedWorkout");
     }
 
     return status;
@@ -422,11 +427,12 @@ Future workoutDeletionConfirmation(
                           )),
                       TextButton(
                           onPressed: () async {
-                            Navigator.of(context).pop();
                             showDialogLoader(context);
                             var status = await deleteWorkout(
                                 context, workoutName, workoutIndex);
                             Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+
                             if (status != SUCCESS_MESSAGE) {
                               showErrorDialogWithoutRetry(context, status);
                             }

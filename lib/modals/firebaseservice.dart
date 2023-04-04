@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
@@ -9,6 +11,18 @@ import '../Widgets/utils/loader_error_handle_widget.dart';
 
 var mainDocRef =
     FirebaseFirestore.instance.collection('users').doc(getUserDetails.userId);
+
+Future editUserDetails() async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(getUserDetails.userId)
+        .set(getUserDetailsInJSON);
+  } on FirebaseException catch (e) {
+    return e.message;
+  }
+  return SUCCESS_MESSAGE;
+}
 
 Future addMealsToDatabase(MealModal meal) async {
   if (await isInternetCOnnectionDown()) {
@@ -25,7 +39,7 @@ Future addMealsToDatabase(MealModal meal) async {
     'mealType': getMealTypeEnumToStringConvertor(meal.mealType),
     'imageLink': meal.imageLink,
     'dateTime': timestamp,
-    'notfications': meal.notifications,
+    'notificationsID': meal.notificationsId,
     'mealCategory': getMealCategoryEnumToStringConvertor(meal.mealCategory),
   });
 
@@ -55,7 +69,7 @@ Future deleteMealFromDatabase(MealModal meal) async {
     'mealType': getMealTypeEnumToStringConvertor(meal.mealType),
     'imageLink': meal.imageLink,
     'dateTime': timestamp,
-    'notfications': meal.notifications,
+    'notificationsID': meal.notificationsId,
     'mealCategory': getMealCategoryEnumToStringConvertor(meal.mealCategory),
   });
 
@@ -111,8 +125,7 @@ Future addWorkoutsToDatabase(
   for (var i = 0; i < selectedworkouts.length; i++) {
     TimeOfDay workoutTime = selectedworkouts[i].workoutTime;
     DateTime workoutDate = selectedworkouts[i].workoutDate;
-    key = DateTime(workoutDate.year, workoutDate.month, workoutDate.day,
-        workoutTime.hour, workoutTime.minute);
+    key = DateTime(workoutDate.year, workoutDate.month, workoutDate.day);
     Timestamp timestamp = Timestamp.fromDate(DateTime(
         workoutDate.year,
         workoutDate.month,
@@ -149,35 +162,31 @@ Future deleteWorkoutFromDatabase(
     return INTERNET_DOWN_MESSAGE;
   }
   List selectedworkoutsInJSON = [];
-  DateTime key = DateTime.now();
-  for (var i = 0; i < selectedworkouts.length; i++) {
-    TimeOfDay workoutTime = selectedworkouts[i].workoutTime;
-    DateTime workoutDate = selectedworkouts[i].workoutDate;
-    key = DateTime(workoutDate.year, workoutDate.month, workoutDate.day,
-        workoutTime.hour, workoutTime.minute);
-    Timestamp timestamp = Timestamp.fromDate(DateTime(
-        workoutDate.year,
-        workoutDate.month,
-        workoutDate.day,
-        workoutTime.hour,
-        workoutTime.minute));
-    selectedworkoutsInJSON.add({
-      'notificationID': selectedworkouts[i].notificationID,
-      'exerciseName': selectedworkouts[i].exerciseName,
-      'workoutDateTime': timestamp,
-      'exerciseDescription': selectedworkouts[i].exerciseDescription,
-      'reps': selectedworkouts[i].reps,
-      'sets': selectedworkouts[i].sets,
-      'videoID': selectedworkouts[i].videoID,
-      'totalworkoutDuration': selectedworkouts[i].totalworkoutDuration,
-    });
-  }
+  DateTime workoutDate = selectedworkouts[0].workoutDate;
+  DateTime key = DateTime(workoutDate.year, workoutDate.month, workoutDate.day);
   try {
     await mainDocRef.collection('workouts').doc('${key.toString()}').delete();
     //     .update({
     //   '$key': selectedworkoutsInJSON,
     // });
   } on FirebaseException catch (e) {
+    return e.message;
+  }
+  return SUCCESS_MESSAGE;
+}
+
+Future addImagesToDatabase(String filePath, DateTime clickDate) async {
+  try {
+    await mainDocRef.collection('images').doc('imagepaths').update({
+      'imagePaths': FieldValue.arrayUnion([
+        {
+          'path': filePath,
+          'date': Timestamp.fromDate(clickDate),
+        }
+      ])
+    });
+  } on FirebaseException catch (e) {
+    print("ERRRORRR = $e");
     return e.message;
   }
   return SUCCESS_MESSAGE;
@@ -195,6 +204,11 @@ Future initializeDatabaseRelatedThingsForApp() async {
   }
   if (status == SUCCESS_MESSAGE) {
     status = await setupWorkoutsFromDatabase();
+  } else {
+    return status;
+  }
+  if (status == SUCCESS_MESSAGE) {
+    status = await setImagesFromDatabase();
   } else {
     return status;
   }
@@ -284,7 +298,7 @@ Future setupMealsFromDatabase() async {
               time: TimeOfDay.fromDateTime(mealArray[i]['dateTime'].toDate()),
               imageLink: mealArray[i]['imageLink'],
               date: mealArray[i]['dateTime'].toDate(),
-              notifications: mealArray[i]['notfications'],
+              notificationsId: mealArray[i]['notificationsID'],
               mealCategory: getMealCategoryStringToEnumConvertor(
                   mealArray[i]['mealCategory'])));
         }
@@ -315,6 +329,7 @@ Future setupWorkoutsFromDatabase() async {
         List<int> sets = [];
         List reps = [];
         List videoId = [];
+        List<bool> isCompleted = [];
         DateTime date = DateTime.now();
         TimeOfDay time = TimeOfDay.now();
         int notificationId = 0;
@@ -324,6 +339,7 @@ Future setupWorkoutsFromDatabase() async {
           sets.add(workoutsForDay[i]['sets']);
           reps.add(workoutsForDay[i]['reps']);
           videoId.add(workoutsForDay[i]['videoID']);
+          isCompleted.add(workoutsForDay[i]['isCompleted']);
           date = workoutsForDay[i]['workoutDateTime'].toDate();
           time = TimeOfDay.fromDateTime(
               workoutsForDay[i]['workoutDateTime'].toDate());
@@ -336,11 +352,41 @@ Future setupWorkoutsFromDatabase() async {
             time: time,
             notificationId: notificationId,
             videoID: videoId,
+            isCompleted: isCompleted,
             sets: sets,
             reps: reps);
       }
     });
   } on FirebaseException catch (e) {
+    return e.message;
+  }
+  return SUCCESS_MESSAGE;
+}
+
+Future setImagesFromDatabase() async {
+  try {
+    await mainDocRef
+        .collection('images')
+        .doc('imagepaths')
+        .get()
+        .then((DocumentSnapshot documentSnapshot) async {
+      if (documentSnapshot.data() != null) {
+        Map imagePaths = documentSnapshot.data() as Map;
+        List imagePathsArray = imagePaths['imagePaths'];
+        for (var i = 0; i < imagePathsArray.length; i++) {
+          String path = imagePathsArray[i]['path'].replaceAll('File: ', '');
+          path = path.substring(1, path.length - 1);
+          // await File(path.toString()).exists();
+          if (await File(path.toString()).exists()) {
+            setImagePaths(ImageModal(
+                filepath: File(path),
+                imageClickDate: imagePathsArray[i]['date'].toDate()));
+          }
+        }
+      }
+    });
+  } on FirebaseException catch (e) {
+    print('ERROR = $e');
     return e.message;
   }
   return SUCCESS_MESSAGE;

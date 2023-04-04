@@ -29,7 +29,7 @@ class MealModal {
   DateTime date;
   TimeOfDay time;
   String imageLink;
-  bool notifications;
+  int notificationsId;
   MealCategory mealCategory;
 
   MealModal({
@@ -39,7 +39,7 @@ class MealModal {
     required this.time,
     required this.imageLink,
     required this.date,
-    required this.notifications,
+    required this.notificationsId,
     required this.mealCategory,
   });
 }

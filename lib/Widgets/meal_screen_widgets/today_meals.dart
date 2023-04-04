@@ -71,7 +71,7 @@ class _TodayMealsState extends State<TodayMeals> {
     return Text(
       'No $mealType Added For Today \n Add Now!'.toUpperCase(),
       textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 12, color: Color.fromARGB(255, 255, 17, 0)),
+      style: TextStyle(fontSize: 12, color: Colors.grey),
     );
   }
 
@@ -253,25 +253,12 @@ class _TodayMealsState extends State<TodayMeals> {
                                                         child: Container(
                                                       alignment:
                                                           Alignment.centerRight,
-                                                      child: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            if (mealItem
-                                                                .notifications) {
-                                                              mealItem.notifications =
-                                                                  false;
-                                                              return;
-                                                            }
-                                                            mealItem.notifications =
-                                                                true;
-                                                          });
-                                                        },
-                                                        child: Container(
+                                                      child: Container(
                                                           padding:
                                                               EdgeInsets.all(5),
                                                           decoration: BoxDecoration(
-                                                              color: Color
-                                                                  .fromRGBO(
+                                                              color:
+                                                                  Color.fromRGBO(
                                                                       197,
                                                                       139,
                                                                       242,
@@ -280,30 +267,11 @@ class _TodayMealsState extends State<TodayMeals> {
                                                                   BorderRadius
                                                                       .circular(
                                                                           30)),
-                                                          child: mealItem
-                                                                  .notifications
-                                                              ? Icon(
-                                                                  Icons
-                                                                      .notifications_outlined,
-                                                                  color: Color
-                                                                      .fromRGBO(
-                                                                          197,
-                                                                          139,
-                                                                          242,
-                                                                          1),
-                                                                )
-                                                              : Icon(
-                                                                  Icons
-                                                                      .notifications_off_outlined,
-                                                                  color: Color
-                                                                      .fromRGBO(
-                                                                          197,
-                                                                          139,
-                                                                          242,
-                                                                          1),
-                                                                ),
-                                                        ),
-                                                      ),
+                                                          child: Icon(
+                                                              Icons
+                                                                  .arrow_circle_right_outlined,
+                                                              color: Color(
+                                                                  0xFFC58BF2))),
                                                     ))
                                                   ],
                                                 )),

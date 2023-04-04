@@ -54,112 +54,132 @@ class _ShowDailyWorkoutsListState extends State<ShowDailyWorkoutsList> {
             style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
           ),
         ),
-        Container(
-          height: MediaQuery.of(context).size.height * 0.88 -
-              (AppBar().preferredSize.height +
-                  MediaQuery.of(context).padding.top +
-                  200),
-          width: MediaQuery.of(context).size.width,
-          child: ReorderableListView(
-            onReorder: (oldIndex, newIndex) {
-              if (oldIndex < newIndex) {
-                newIndex -= 1;
-              }
-              var listItem = workoutList.removeAt(oldIndex);
-              workoutList.insert(newIndex, listItem);
-              getSelectedWorkout[workoutIndex] = workoutList;
-              setState(() {});
-            },
-            children: workoutList.map((exercise) {
-              return GestureDetector(
-                  key: ValueKey(exercise.exerciseName),
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-                      return WorkoutInfoScreen(
-                          videoId: exercise.videoID,
-                          exerciseSteps: exercise.exerciseDescription,
-                          exerciseName: exercise.exerciseName);
-                    }));
+        workoutList.length == 0
+            ? Center(
+                child: Text(
+                  'No Workouts added for this day',
+                  style: TextStyle(color: Colors.grey, fontSize: 14),
+                ),
+              )
+            : Container(
+                height: MediaQuery.of(context).size.height * 0.88 -
+                    (AppBar().preferredSize.height +
+                        MediaQuery.of(context).padding.top +
+                        200),
+                width: MediaQuery.of(context).size.width,
+                child: ReorderableListView(
+                  onReorder: (oldIndex, newIndex) {
+                    if (oldIndex < newIndex) {
+                      newIndex -= 1;
+                    }
+                    var listItem = workoutList.removeAt(oldIndex);
+                    workoutList.insert(newIndex, listItem);
+                    getSelectedWorkout[workoutIndex] = workoutList;
+                    setState(() {});
                   },
-                  child: Container(
-                    height: 100,
-                    decoration: BoxDecoration(color: Colors.white, boxShadow: [
-                      BoxShadow(
-                          color: Color.fromRGBO(158, 158, 158, 0.2),
-                          blurRadius: 10)
-                    ]),
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: LayoutBuilder(builder: (_, constraints) {
-                      return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: constraints.maxWidth * 0.7,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                  children: workoutList.map((exercise) {
+                    return GestureDetector(
+                        key: ValueKey(exercise.exerciseName),
+                        onTap: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (_) {
+                            return WorkoutInfoScreen(
+                                videoId: exercise.videoID,
+                                exerciseSteps: exercise.exerciseDescription,
+                                exerciseName: exercise.exerciseName);
+                          }));
+                        },
+                        child: Container(
+                          height: 100,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromRGBO(158, 158, 158, 0.2),
+                                    blurRadius: 10)
+                              ]),
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          margin: EdgeInsets.only(bottom: 20),
+                          child: LayoutBuilder(builder: (_, constraints) {
+                            return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    exercise.exerciseName,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 16),
-                                  ),
-                                  exercise.isCompleted
-                                      ? Text(
-                                          '${exercise.sets} x ${exercise.reps} | Completed',
+                                  Container(
+                                    width: constraints.maxWidth * 0.7,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          exercise.exerciseName,
                                           style: TextStyle(
-                                              fontSize: 14, color: Colors.grey),
-                                        )
-                                      : Text(
-                                          '${exercise.sets} x ${exercise.reps} | Not Completed',
-                                          style: TextStyle(
-                                              fontSize: 14, color: Colors.grey),
-                                        )
-                                ],
-                              ),
-                            ),
-                            Container(
-                              child: Row(
-                                children: [
-                                  IconButton(
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                          context: context,
-                                          builder: (_) {
-                                            return EditWorkoutBottomSheet(
-                                                workoutIndex: workoutIndex,
-                                                exerciseName:
-                                                    exercise.exerciseName);
-                                          }).then((value) {
-                                        setState(() {});
-                                      });
-                                    },
-                                    icon: Icon(Icons.edit),
-                                    color: Color(0xFF92A3FD),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 16),
+                                        ),
+                                        exercise.isCompleted
+                                            ? Text(
+                                                '${exercise.sets} x ${exercise.reps} | Completed',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey),
+                                              )
+                                            : Text(
+                                                '${exercise.sets} x ${exercise.reps} | Not Completed',
+                                                style: TextStyle(
+                                                    fontSize: 14,
+                                                    color: Colors.grey),
+                                              )
+                                      ],
+                                    ),
                                   ),
-                                  IconButton(
-                                      onPressed: () async {
-                                        await workoutDeletionConfirmation(
-                                            workoutName: exercise.exerciseName,
-                                            workoutIndex: workoutIndex,
-                                            context: context,
-                                            confirmationMessage:
-                                                'Do you really want to delete this exercise?');
-                                        setState(() {});
-                                      },
-                                      icon: Icon(Icons.delete_forever),
-                                      color: Colors.red),
-                                ],
-                              ),
-                            )
-                          ]);
-                    }),
-                  ));
-            }).toList(),
-          ),
-        ),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                                context: context,
+                                                builder: (_) {
+                                                  return EditWorkoutBottomSheet(
+                                                      workoutIndex:
+                                                          workoutIndex,
+                                                      exerciseName: exercise
+                                                          .exerciseName);
+                                                }).then((value) {
+                                              setState(() {});
+                                            });
+                                          },
+                                          icon: Icon(Icons.edit),
+                                          color: Color(0xFF92A3FD),
+                                        ),
+                                        IconButton(
+                                            onPressed: () async {
+                                              await workoutDeletionConfirmation(
+                                                      workoutName:
+                                                          exercise.exerciseName,
+                                                      workoutIndex:
+                                                          workoutIndex,
+                                                      context: context,
+                                                      confirmationMessage:
+                                                          'Do you really want to delete this exercise?')
+                                                  .then((value) {
+                                                setState(() {});
+                                              });
+                                            },
+                                            icon: Icon(Icons.delete_forever),
+                                            color: Colors.red),
+                                      ],
+                                    ),
+                                  )
+                                ]);
+                          }),
+                        ));
+                  }).toList(),
+                ),
+              ),
       ],
     );
   }

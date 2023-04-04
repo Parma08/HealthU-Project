@@ -8,6 +8,7 @@ import 'package:fiteness_x/modals/firebaseservice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../../modals/appGetterSetter.dart';
 import '../../services/notification_service.dart';
@@ -18,6 +19,7 @@ class StartWorkoutScreen extends StatefulWidget {
 }
 
 class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
+  AudioPlayer player = AudioPlayer();
   List<SelectedWorkoutModal> workoutsForToday = [];
   int workoutIndex = 0;
   int totalSets = 0;
@@ -31,15 +33,22 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
           workoutIndex = i;
 
           workoutsForToday = List.from(getSelectedWorkout[i]);
-          workoutsForToday.removeWhere((exercise) => exercise.isCompleted);
           for (var exercise in workoutsForToday) {
-            totalSets = totalSets + exercise.sets;
+            if (!exercise.isCompleted) {
+              totalSets = totalSets + exercise.sets;
+            }
+          }
+          if (workoutsForToday.length == 0) {
+            playCongratulationsSound();
           }
           return;
         } else {
           break;
         }
       }
+    }
+    if (workoutsForToday.length == 0) {
+      playCongratulationsSound();
     }
   }
 
@@ -51,6 +60,8 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
             await addWorkoutsToDatabase(getSelectedWorkout[workoutIndex]);
         if (status != SUCCESS_MESSAGE) {
           getSelectedWorkout[workoutIndex][i].isCompleted = false;
+        } else {
+          totalSets = totalSets - getSelectedWorkout[workoutIndex][i].sets;
         }
         NotificationService().cancelNotification(
             getSelectedWorkout[workoutIndex][i].notificationID);
@@ -62,6 +73,11 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
   void initState() {
     super.initState();
     getWorkoutsForToday();
+  }
+
+  void playCongratulationsSound() async {
+    await player.setAsset('assets/audio/workout_complete_audio.mp3');
+    player.play();
   }
 
   @override
@@ -227,6 +243,9 @@ class _StartWorkoutScreenState extends State<StartWorkoutScreen> {
                                               (element) =>
                                                   element.exerciseName ==
                                                   exercise.exerciseName);
+                                          if (workoutsForToday.length == 0) {
+                                            playCongratulationsSound();
+                                          }
                                         });
                                       });
                                     },

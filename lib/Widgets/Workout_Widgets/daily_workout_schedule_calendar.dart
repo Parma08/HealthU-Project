@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../../themes.dart';
+import '../../modals/appGetterSetter.dart';
 import '../utils/loader_error_handle_widget.dart';
 
 class DailyWorkoutScheduleCalendar extends StatefulWidget {
@@ -36,6 +37,24 @@ class _DailyWorkoutScheduleCalendarState
             (MediaQuery.of(context).size.width / 7 + 20) * (activeIndex));
       });
     }
+  }
+
+  bool checkIfWorkoutExistsForSelectedDate() {
+    for (var i = 0; i < getSelectedWorkout.length; i++) {
+      for (var j = 0; j < getSelectedWorkout[i].length; j++) {
+        if (getSelectedWorkout[i][j].workoutDate.year ==
+                calendarDates[activeIndex].year &&
+            getSelectedWorkout[i][j].workoutDate.month ==
+                calendarDates[activeIndex].month &&
+            getSelectedWorkout[i][j].workoutDate.day ==
+                calendarDates[activeIndex].day) {
+          return true;
+        } else {
+          break;
+        }
+      }
+    }
+    return false;
   }
 
   changeMonth(String direction) {
@@ -97,13 +116,11 @@ class _DailyWorkoutScheduleCalendarState
             setState(() {});
           });
         },
-        child: !(calendarDates[activeIndex].day == DateTime.now().day &&
-                calendarDates[activeIndex].month == DateTime.now().month &&
-                calendarDates[activeIndex].year == DateTime.now().year)
-            ? SizedBox(
-                height: 0,
-              )
-            : Container(
+        child: ((calendarDates[activeIndex].day == DateTime.now().day &&
+                    calendarDates[activeIndex].month == DateTime.now().month &&
+                    calendarDates[activeIndex].year == DateTime.now().year) &&
+                checkIfWorkoutExistsForSelectedDate())
+            ? Container(
                 child: Container(
                   height: 50,
                   margin: const EdgeInsets.only(
@@ -123,20 +140,43 @@ class _DailyWorkoutScheduleCalendarState
                     ),
                   ),
                 ),
+              )
+            : SizedBox(
+                height: 0,
               ),
       ),
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Color(0xFF92A3FD),
-        elevation: 0,
-        title: Text(
-          'Workout Schedule',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 22,
+          centerTitle: true,
+          backgroundColor: Color(0xFF92A3FD),
+          elevation: 0,
+          title: Text(
+            'Workout Schedule',
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 22,
+            ),
           ),
-        ),
-      ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return Dialog(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          color: Color(0xFF92A3FD),
+                          child: Text(
+                            'Hold and drag to change the order of your exercises',
+                            style: TextStyle(color: Colors.white, fontSize: 16),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.info_outlined))
+          ]),
       body: Column(
         children: [
           Container(

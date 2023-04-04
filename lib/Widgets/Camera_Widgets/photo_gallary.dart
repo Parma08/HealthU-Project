@@ -13,25 +13,29 @@ class PhotoGallary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: MediaQuery.of(context).size.height * 0.6,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 20),
-        margin: EdgeInsets.symmetric(vertical: 20),
-        color: Color.fromARGB(255, 208, 233, 253),
-        child: ListView.builder(
-          itemBuilder: (_, index) {
-            return GestureDetector(
-              onTap: () => Navigator.of(context).pop(index),
-              child: Container(
-                  width: 150,
-                  height: 300,
-                  child: Image.file(getImagePaths[index].filepath)),
-            );
-          },
-          itemCount: getImagePaths.length,
-        ),
-      ),
+      body: getImagePaths.length == 0
+          ? Center(
+              child: Text('No Photos To Compare'),
+            )
+          : Container(
+              height: MediaQuery.of(context).size.height * 0.6,
+              width: MediaQuery.of(context).size.width,
+              padding: EdgeInsets.symmetric(vertical: 20),
+              margin: EdgeInsets.symmetric(vertical: 20),
+              color: Color.fromARGB(255, 208, 233, 253),
+              child: ListView.builder(
+                itemBuilder: (_, index) {
+                  return GestureDetector(
+                    onTap: () => Navigator.of(context).pop(index),
+                    child: Container(
+                        width: 150,
+                        height: 300,
+                        child: Image.file(getImagePaths[index].filepath)),
+                  );
+                },
+                itemCount: getImagePaths.length,
+              ),
+            ),
     );
   }
 }

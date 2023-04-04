@@ -5,6 +5,7 @@ import 'package:fiteness_x/Widgets/Workout_Widgets/workout_info_screen.dart';
 import 'package:fiteness_x/themes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -173,6 +174,27 @@ class _WorkoutListState extends State<WorkoutList> {
             fontSize: 22,
           ),
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (_) {
+                    return Dialog(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        color: Color(0xFF92A3FD),
+                        child: Text(
+                          'Touch and hold the exercises to add them to your workout list.',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              icon: Icon(Icons.info_outlined))
+        ],
         centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

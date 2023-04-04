@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/home_page_indicator.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/past_workouts.dart';
 import 'package:fiteness_x/Widgets/Home_Screen_Widgets/water_intake.dart';
+import 'package:fiteness_x/Widgets/utils/info_page.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
+import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -18,36 +20,50 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Widget bmrAndIbwBuilder(BuildContext context, String title, double value,
       String illustrationLink) {
-    return Container(
-      height: 190,
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(color: Color.fromRGBO(158, 158, 158, 0.2), blurRadius: 5)
-          ]),
-      width: MediaQuery.of(context).size.width * 0.45,
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-          ),
-          Text(
-            '${value}',
-            style: TextStyle(
-                color: Color.fromARGB(255, 143, 162, 255),
-                fontWeight: FontWeight.w600),
-          ),
-          Container(
-              width: MediaQuery.of(context).size.width * 0.40,
-              height: 80,
-              child: SvgPicture.asset(
-                illustrationLink,
-                fit: BoxFit.cover,
-              ))
-        ],
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+          if (title == 'Basal Metabolic Rate (BMR)') {
+            return InfoPage(
+                heading: 'Basal Metabolic Rate (BMR)', content: BMR_INFO);
+          } else {
+            return InfoPage(
+                heading: 'Ideal Body Weight (IBW)', content: IBW_INFO);
+          }
+        }));
+      },
+      child: Container(
+        height: 190,
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  color: Color.fromRGBO(158, 158, 158, 0.2), blurRadius: 5)
+            ]),
+        width: MediaQuery.of(context).size.width * 0.45,
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              '${value}',
+              style: TextStyle(
+                  color: Color.fromARGB(255, 143, 162, 255),
+                  fontWeight: FontWeight.w600),
+            ),
+            Container(
+                width: MediaQuery.of(context).size.width * 0.40,
+                height: 80,
+                child: SvgPicture.asset(
+                  illustrationLink,
+                  fit: BoxFit.cover,
+                ))
+          ],
+        ),
       ),
     );
   }
@@ -70,16 +86,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        FirebaseAuth.instance.signOut();
-                      },
-                      child: Container(
-                        child: Text(
-                          'Welcome Back,',
-                          style:
-                              TextStyle(fontSize: 12, color: Color(0xFFADA4A5)),
-                        ),
+                    Container(
+                      child: Text(
+                        'Welcome Back,',
+                        style:
+                            TextStyle(fontSize: 12, color: Color(0xFFADA4A5)),
                       ),
                     ),
                     Text(

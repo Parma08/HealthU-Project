@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:exif/exif.dart';
 import 'package:fiteness_x/Widgets/Camera_Widgets/comparison_screens.dart';
 import 'package:fiteness_x/Widgets/Camera_Widgets/photo_viewer.dart';
+import 'package:fiteness_x/Widgets/utils/info_page.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
 import 'package:fiteness_x/modals/constants.dart';
 import 'package:fiteness_x/themes.dart';
@@ -13,6 +14,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../modals/firebaseservice.dart';
 
 class Camera_Screen extends StatefulWidget {
   Camera_Screen({super.key});
@@ -79,7 +82,7 @@ class _Camera_ScreenState extends State<Camera_Screen> {
     final name = imagePath.split('/').last;
     final image = File('${directory.path}/$name');
     final savedImage = await File(imagePath).copy(image.path);
-    print("SAVEEEED $savedImage");
+    await addImagesToDatabase(savedImage.toString(), DateTime.now());
     setImagePaths(
         ImageModal(filepath: savedImage, imageClickDate: pictureClickDate));
     return File(imagePath).copy(image.path);
@@ -152,21 +155,31 @@ class _Camera_ScreenState extends State<Camera_Screen> {
                                         color: Color(0xFF92A3FD))),
                               ],
                             ))),
-                        Container(
-                          margin: EdgeInsets.only(left: 10, top: 10),
-                          alignment: Alignment.center,
-                          width: 100,
-                          height: 40,
-                          decoration: BoxDecoration(
-                            gradient: primaryLinearGradient,
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                          child: const Text(
-                            'Learn More',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.w600),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (_) {
+                              return InfoPage(
+                                  heading: 'Progress Tracking',
+                                  content: PHOTO_COMPARISON_BENEFITS);
+                            }));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 10, top: 10),
+                            alignment: Alignment.center,
+                            width: 100,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              gradient: primaryLinearGradient,
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            child: const Text(
+                              'Learn More',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600),
+                            ),
                           ),
                         )
                       ],
@@ -238,6 +251,13 @@ class _Camera_ScreenState extends State<Camera_Screen> {
                     fontWeight: FontWeight.w600),
               ),
             ),
+            getImagePaths.length == 0
+                ? Center(
+                    child: Text(
+                    'No Photos To Show',
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
+                  ))
+                : SizedBox(),
             ...getImagePaths.map((imagePaths) {
               return Center(
                 child: Stack(

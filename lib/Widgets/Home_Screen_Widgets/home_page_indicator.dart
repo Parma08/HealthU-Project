@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:fiteness_x/Widgets/utils/info_page.dart';
 import 'package:fiteness_x/modals/appGetterSetter.dart';
+import 'package:fiteness_x/modals/constants.dart';
 import 'package:flutter/material.dart';
 
 class HomePageIndicator extends StatelessWidget {
@@ -79,38 +81,45 @@ class HomePageIndicator extends StatelessWidget {
             indicatorBuilder(0.32993, Color(0xFF4CAF50)),
             indicatorBuilder(0.1166, Color(0XFFADD8E6)),
             Center(
-              child: Container(
-                width: 270,
-                height: 270,
-                decoration: BoxDecoration(
-                    color: indicatorBGColor, shape: BoxShape.circle),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      'body\nmass index'.toUpperCase(),
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 22),
-                      textAlign: TextAlign.center,
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(vertical: 14),
-                      child: Text(
-                        '${bmi}',
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+                    return InfoPage(heading: 'BMI', content: BMI_INFO);
+                  }));
+                },
+                child: Container(
+                  width: 270,
+                  height: 270,
+                  decoration: BoxDecoration(
+                      color: indicatorBGColor, shape: BoxShape.circle),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'body\nmass index'.toUpperCase(),
                         style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: indicatorFGColor,
-                            fontSize: 25),
+                            fontWeight: FontWeight.w500, fontSize: 22),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    Text('${category}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                          color: indicatorFGColor,
-                        ))
-                  ],
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 14),
+                        child: Text(
+                          '${bmi}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: indicatorFGColor,
+                              fontSize: 25),
+                        ),
+                      ),
+                      Text('${category}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: indicatorFGColor,
+                          ))
+                    ],
+                  ),
                 ),
               ),
             ),
