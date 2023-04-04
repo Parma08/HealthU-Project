@@ -4,8 +4,8 @@ class RightToLeftTransition extends PageRouteBuilder {
   final Widget child;
   RightToLeftTransition({required this.child})
       : super(
-          transitionDuration: Duration(milliseconds: 400),
-          reverseTransitionDuration: Duration(milliseconds: 400),
+          transitionDuration: Duration(milliseconds: 250),
+          reverseTransitionDuration: Duration(milliseconds: 250),
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );
 
