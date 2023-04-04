@@ -95,6 +95,7 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                     ),
                     IconButton(
                       onPressed: () async {
+                        currentWaterIntake = currentWaterIntake + 0.25;
                         final status =
                             await setWaterConsumed(currentWaterIntake);
 
@@ -104,10 +105,9 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                           } catch (e) {
                             print('Vibrator cannot be used');
                           }
-                          if (status == SUCCESS_MESSAGE) {
-                            currentWaterIntake = currentWaterIntake + 0.25;
-                          } else {
-                            return;
+                          if (status != SUCCESS_MESSAGE) {
+                            currentWaterIntake = currentWaterIntake - 0.25;
+                            setWaterConsumed(currentWaterIntake);
                           }
                         });
                       },
@@ -133,7 +133,10 @@ class _WaterIntakeWidgetState extends State<WaterIntakeWidget> {
                               currentWaterIntake = 0;
                             } else {
                               setWaterConsumed(currentWaterIntake);
-                              if (status == SUCCESS_MESSAGE) {}
+                              if (status != SUCCESS_MESSAGE) {
+                                currentWaterIntake = currentWaterIntake + 0.25;
+                                setWaterConsumed(currentWaterIntake);
+                              }
                             }
                           });
                         }

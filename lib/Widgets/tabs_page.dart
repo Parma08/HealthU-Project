@@ -115,7 +115,7 @@ class TabsPageState extends State<TabsPage> {
               ),
               BottomNavigationBarItem(
                   icon: Transform.translate(
-                    offset: Offset(0, -30),
+                    offset: Offset(0, -15),
                     child: Container(
                         decoration: BoxDecoration(
                             gradient: primaryLinearGradient,
