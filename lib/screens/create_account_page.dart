@@ -173,28 +173,28 @@ class _CreateAccountState extends State<CreateAccount> {
                                       width: 1,
                                       color: Color.fromRGBO(52, 52, 52, 0.3)))),
                         ),
-                        Center(
-                            child: Container(
-                          width: 40,
-                          height: 20,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          color: Theme.of(context).canvasColor,
-                          child: const Text(
-                            'Or',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ))
+                        // Center(
+                        //     child: Container(
+                        //   width: 40,
+                        //   height: 20,
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   color: Theme.of(context).canvasColor,
+                        //   child: const Text(
+                        //     'Or',
+                        //     style: TextStyle(fontSize: 12),
+                        //   ),
+                        // ))
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SocialLoginButtons(),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: [
+                    //     SocialLoginButtons(),
+                    //   ],
+                    // ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
                     RichText(
                       text: TextSpan(
                           text: 'Already have an account ',

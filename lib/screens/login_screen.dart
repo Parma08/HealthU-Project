@@ -150,23 +150,23 @@ class _LoginScreenState extends State<LoginScreen> {
                                       width: 1,
                                       color: Color.fromRGBO(52, 52, 52, 0.3)))),
                         ),
-                        Center(
-                            child: Container(
-                          width: 40,
-                          height: 20,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          color: Theme.of(context).canvasColor,
-                          child: const Text(
-                            'Or',
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ))
+                        // Center(
+                        //     child: Container(
+                        //   width: 40,
+                        //   height: 20,
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   color: Theme.of(context).canvasColor,
+                        //   child: const Text(
+                        //     'Or',
+                        //     style: TextStyle(fontSize: 12),
+                        //   ),
+                        // ))
                       ],
                     ),
-                    SocialLoginButtons(),
-                    SizedBox(
-                      height: 20,
-                    ),
+                    // SocialLoginButtons(),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
                     RichText(
                         text: TextSpan(
                             text: 'Don\'t have an account yet? ',

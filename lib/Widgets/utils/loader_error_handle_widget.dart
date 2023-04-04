@@ -51,7 +51,7 @@ Future showErrorDialogWithoutRetry(BuildContext context, String errorMessage) {
             decoration: BoxDecoration(
                 gradient: primaryLinearGradient,
                 borderRadius: BorderRadius.circular(20)),
-            height: 260,
+            height: 275,
             child: Column(
               children: [
                 Container(
@@ -64,7 +64,7 @@ Future showErrorDialogWithoutRetry(BuildContext context, String errorMessage) {
                 ),
                 Container(
                   alignment: Alignment.center,
-                  height: 60,
+                  height: 75,
                   child: Text(
                     errorMessage,
                     style: TextStyle(
@@ -160,7 +160,7 @@ Future showErrorDialog(
               decoration: BoxDecoration(
                   gradient: primaryLinearGradient,
                   borderRadius: BorderRadius.circular(20)),
-              height: 260,
+              height: 275,
               child: Column(
                 children: [
                   Container(
@@ -173,7 +173,7 @@ Future showErrorDialog(
                   ),
                   Container(
                     alignment: Alignment.center,
-                    height: 60,
+                    height: 75,
                     child: Text(
                       errorMessage,
                       style: TextStyle(
