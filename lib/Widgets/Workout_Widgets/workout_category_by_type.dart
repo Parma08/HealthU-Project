@@ -68,7 +68,7 @@ class WorkoutCategoryByType extends StatelessWidget {
                                       fontWeight: FontWeight.w600),
                                 ),
                                 Text(
-                                  '11 Exercises',
+                                  '10 Exercises',
                                   style: TextStyle(
                                     fontSize: 12,
                                   ),
